@@ -1,7 +1,7 @@
 <template>
   <v-container class="pa-12">
     <v-row>
-      <v-col cols="12" md="6" class="mx-auto">
+      <v-col cols="12" md="3" class="mx-auto">
         <v-text-field
           v-model="email"
           label="邮箱"
@@ -10,7 +10,7 @@
       /></v-col>
     </v-row>
     <v-row>
-      <v-col cols="12" md="6" class="mx-auto">
+      <v-col cols="12" md="3" class="mx-auto">
         <v-text-field
           v-model="password"
           label="密码"
@@ -47,7 +47,6 @@
         <v-btn
           size="large"
           block
-          :disabled="user ? false : true"
           @click="signOut"
           >退出</v-btn
         >
@@ -111,15 +110,27 @@ const signOut = async () => {
 }
 
 const signUpNewUser = async () => {
-  const { data, error } = await supabase.auth.signUp({
+  let { data, error } = await supabase.auth.signUp({
     email: email.value,
     password: password.value,
   })
-  console.log(data, error)
   if (error) {
     snackBarText.value = error
     snackBar.value = true
-    console.log(error)
+  } else {
+    let { error: errorInsert } = await supabase
+      .from('users')
+      .insert([
+        { id: data.user.id},
+      ])
+      .select()
+    if (errorInsert) {
+      snackBarText.value = errorInsert
+      snackBar.value = true
+    } else {      
+      snackBarText.value = "注册成功"
+      snackBar.value = true  
+    }
   }
 }
 

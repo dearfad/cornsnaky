@@ -6,5 +6,8 @@ export default defineNuxtConfig({
     '@nuxthub/core',
     'vuetify-nuxt-module',
     '@nuxtjs/supabase'
-  ]
+  ],
+  supabase: {
+    redirect: false,
+  },
 })
