@@ -44,12 +44,7 @@
     </v-row>
     <v-row>
       <v-col cols="12" md="3" class="mx-auto">
-        <v-btn
-          size="large"
-          block
-          @click="signOut"
-          >退出</v-btn
-        >
+        <v-btn size="large" block @click="signOut">退出</v-btn>
       </v-col>
     </v-row>
     <v-row>
@@ -77,6 +72,8 @@ const email = ref("")
 const password = ref("")
 const snackBar = ref(false)
 const snackBarText = ref("")
+const router = useRouter()
+const stateStore = useStateStore()
 
 const user = useSupabaseUser()
 
@@ -98,6 +95,11 @@ const signInWithPassword = async () => {
         snackBarText.value = error
     }
     snackBar.value = true
+  } else {
+    stateStore.userId = user.value.id
+    stateStore.userEmail = user.value.email
+    stateStore.getGroup()
+    router.push("/user")
   }
 }
 
@@ -110,7 +112,7 @@ const signOut = async () => {
 }
 
 const signUpNewUser = async () => {
-  let { data, error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email: email.value,
     password: password.value,
   })
@@ -118,18 +120,16 @@ const signUpNewUser = async () => {
     snackBarText.value = error
     snackBar.value = true
   } else {
-    let { error: errorInsert } = await supabase
-      .from('users')
-      .insert([
-        { id: data.user.id},
-      ])
+    const { error: errorInsert } = await supabase
+      .from("users")
+      .insert([{ id: data.user.id }])
       .select()
     if (errorInsert) {
       snackBarText.value = errorInsert
       snackBar.value = true
-    } else {      
+    } else {
       snackBarText.value = "注册成功"
-      snackBar.value = true  
+      snackBar.value = true
     }
   }
 }

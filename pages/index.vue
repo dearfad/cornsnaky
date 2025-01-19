@@ -22,7 +22,7 @@
     </v-row>
     <v-row>
       <v-col cols="8" md="2" class="mx-auto my-16" >
-        <v-btn size="x-large" block to="/test">进入</v-btn>
+        <v-btn size="x-large" block to="/user">进入</v-btn>
       </v-col>
     </v-row>
   </v-container>

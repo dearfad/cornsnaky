@@ -1,6 +1,6 @@
 <template>
   <div>
-    test
+    quest
   </div>
 </template>
 
@@ -8,4 +8,9 @@
 definePageMeta({
   middleware: 'auth'
 })
+const user = useSupabaseUser()
 </script>
+
+<style>
+
+</style>
