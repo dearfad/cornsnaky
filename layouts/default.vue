@@ -1,9 +1,10 @@
 <template>
   <v-app>
-      <AppBar />
-      <AppFooter />
-      <v-main>
-          <slot />
-      </v-main>
+    <AppBar />
+    <AppNavDrawer />
+    <AppFooter />
+    <v-main class="pt-12 pb-9">
+      <slot />
+    </v-main>
   </v-app>
 </template>

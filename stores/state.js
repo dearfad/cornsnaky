@@ -1,28 +1,43 @@
 export const useStateStore = defineStore(
   "state",
   () => {
+    // NavDrawer
+    const isNavDrawerShow = ref(false)
+    // User
     const userId = ref("")
     const userEmail = ref("")
     const userGroup = ref("")
     const userName = ref("")
+
     const supabase = useSupabaseClient()
     const user = useSupabaseUser()
 
-    async function getGroup() {
+    function newUser() {
+      userId.value = ""
+      userEmail.value = ""
+      userGroup.value = ""
+      userName.value = ""
+    }
+    async function getUserInfo() {
+      userId.value = user.value.id
+      userEmail.value = user.value.email
       const { data } = await supabase
         .from("users")
-        .select("group")
+        .select("*")
         .eq("id", user.value.id)
-      console.log(data[0].group)
       userGroup.value = data[0].group
+      userName.value = data[0].name
     }
 
     return {
+      isNavDrawerShow,
+
       userId,
       userEmail,
       userGroup,
       userName,
-      getGroup,
+      getUserInfo,
+      newUser,
     }
   },
   { persist: true }

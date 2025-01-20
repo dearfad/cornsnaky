@@ -6,7 +6,7 @@
           v-model="email"
           label="邮箱"
           variant="outlined"
-          :disabled="user ? true : false"
+          :disabled="stateStore.userId ? true : false"
       /></v-col>
     </v-row>
     <v-row>
@@ -16,7 +16,7 @@
           label="密码"
           type="password"
           variant="outlined"
-          :disabled="user ? true : false"
+          :disabled="stateStore.userId ? true : false"
         />
       </v-col>
     </v-row>
@@ -25,7 +25,8 @@
         <v-btn
           size="large"
           block
-          :disabled="user ? true : false"
+          :disabled="stateStore.userId ? true : false"
+          :loading="isLogging"
           @click="signInWithPassword"
           >登录</v-btn
         >
@@ -36,7 +37,8 @@
         <v-btn
           block
           size="large"
-          :disabled="user ? true : false"
+          :disabled="stateStore.userId ? true : false"
+          :loading="isRegistering"
           @click="signUpNewUser"
           >注册</v-btn
         >
@@ -44,7 +46,13 @@
     </v-row>
     <v-row>
       <v-col cols="12" md="3" class="mx-auto">
-        <v-btn size="large" block @click="signOut">退出</v-btn>
+        <v-btn
+          size="large"
+          block
+          :disabled="stateStore.userId ? false : true"
+          @click="signOut"
+          >退出</v-btn
+        >
       </v-col>
     </v-row>
     <v-row>
@@ -58,9 +66,6 @@
       </v-col>
     </v-row>
 
-    <!-- <v-btn class="w-25 mx-auto" size="large" @click="signInAnonymously"
-      >匿名登录</v-btn
-    > -->
     <v-snackbar v-model="snackBar" timeout="2000"
       ><div class="text-center">{{ snackBarText }}</div></v-snackbar
     >
@@ -74,16 +79,18 @@ const snackBar = ref(false)
 const snackBarText = ref("")
 const router = useRouter()
 const stateStore = useStateStore()
-
+const isLogging = ref(false)
+const isRegistering = ref(false)
 const user = useSupabaseUser()
 
 const signInWithPassword = async () => {
+  isLogging.value = true
   const { error } = await supabase.auth.signInWithPassword({
     email: email.value,
     password: password.value,
   })
+
   if (error) {
-    console.log(error.code)
     switch (error.code) {
       case "invalid_credentials":
         snackBarText.value = "认证失败：登录凭证无效"
@@ -95,10 +102,10 @@ const signInWithPassword = async () => {
         snackBarText.value = error
     }
     snackBar.value = true
+    isLogging.value = false
   } else {
-    stateStore.userId = user.value.id
-    stateStore.userEmail = user.value.email
-    stateStore.getGroup()
+    await stateStore.getUserInfo()
+    isLogging.value = false
     router.push("/user")
   }
 }
@@ -108,10 +115,16 @@ const signOut = async () => {
   if (error) {
     snackBarText.value = error
     snackBar.value = true
+  } else {
+    stateStore.newUser()
+    snackBarText.value = "退出成功"
+    snackBar.value = true
   }
 }
 
 const signUpNewUser = async () => {
+  isRegistering.value = true
+  stateStore.newUser()
   const { data, error } = await supabase.auth.signUp({
     email: email.value,
     password: password.value,
@@ -119,28 +132,23 @@ const signUpNewUser = async () => {
   if (error) {
     snackBarText.value = error
     snackBar.value = true
+    isRegistering.value = false
   } else {
     const { error: errorInsert } = await supabase
       .from("users")
-      .insert([{ id: data.user.id }])
+      .insert([{ id: data.user.id, name: data.user.email }])
       .select()
     if (errorInsert) {
       snackBarText.value = errorInsert
       snackBar.value = true
+      isRegistering.value = false
     } else {
       snackBarText.value = "注册成功"
       snackBar.value = true
+      await stateStore.getUserInfo()
+      isRegistering.value = false
+      router.push("/user")
     }
   }
 }
-
-// const signInAnonymously = async () => {
-//   const { data, error } = await supabase.auth.signInAnonymously();
-//   console.log(data, error);
-//   if (error) {
-//     snackBarText.value = error;
-//     snackBar.value = true;
-//     console.log(error);
-//   }
-// };
 </script>
