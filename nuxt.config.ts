@@ -10,9 +10,6 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "pinia-plugin-persistedstate/nuxt",
   ],
-  piniaPluginPersistedstate: {
-    storage: "localStorage",
-  },
   supabase: {
     redirect: false,
   },

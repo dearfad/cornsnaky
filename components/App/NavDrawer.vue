@@ -24,9 +24,16 @@
         <v-list-item
           prepend-icon="mdi-account-plus-outline"
           class="font-weight-bold text-subtitle-2"
-          to="/login"
+          to="/register"
         >
           注册
+        </v-list-item>
+        <v-list-item
+          prepend-icon="mdi-login"
+          class="font-weight-bold text-subtitle-2"
+          to="/login"
+        >
+          登录
         </v-list-item>
         <v-list-item
           prepend-icon="mdi-account-edit"

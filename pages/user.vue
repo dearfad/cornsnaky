@@ -6,9 +6,12 @@
         <v-col cols="12" md="4">
           <v-sheet class="d-flex flex-column">
             <v-sheet :elevation="1" class="pa-4 ma-2">
-              <v-sheet class="text-center font-weight-bold text-h5 my-2">{{
+              <v-sheet class="text-center font-weight-bold text-h3 my-2">{{
                 stateStore.userName + "@" + stateStore.userGroup
               }}</v-sheet>
+              <v-sheet class="text-center font-weight-bold text-h4 my-2">
+                {{ stateStore.userIsLeader ? "队长" : "队员" }}
+              </v-sheet>
               <v-btn
                 text="退出登录"
                 block
@@ -60,7 +63,7 @@
                 block
                 size="large"
                 variant="flat"
-                text="创建组"
+                text="创建并加入组"
                 @click="createGroup"
               />
             </v-sheet>
@@ -121,6 +124,7 @@ async function createGroup() {
   const { error } = await supabase.from("groups").insert({
     name: groupname.value,
     code: groupcode.value,
+    leader: stateStore.userId,
   })
   if (error) {
     snackBarText.value = error
@@ -128,6 +132,18 @@ async function createGroup() {
   } else {
     snackBarText.value = "创建组成功"
     snackBar.value = true
+    const { error: error2 } = await supabase
+      .from("users")
+      .update({ group: groupname.value, isleader: true })
+      .eq("id", stateStore.userId)
+    if (error2) {
+      snackBarText.value = error2
+      snackBar.value = true
+    } else {
+      stateStore.userGroup = groupname.value
+      snackBarText.value = "加入组成功"
+      snackBar.value = true
+    }
   }
 }
 

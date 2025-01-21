@@ -38,7 +38,8 @@ const isLoading = ref(false)
 const headers = ref([
   { title: "排名", key: "rank" },
   { title: "组名", key: "name" },
-  { title: "积分", key: "score" },
+  { title: "积分", key: "mainscore" },
+  { title: "小分", key: "sidescore" },
 ])
 const selected = ref()
 
@@ -47,7 +48,7 @@ async function loadGroup() {
   const { data, error } = await supabase
     .from("groups")
     .select("*")
-    .order("score", { ascending: false })
+    .order("mainscore", { ascending: false })
   if (error) {
     snackBarText.value = error
     snackBar.value = true

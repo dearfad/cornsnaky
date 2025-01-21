@@ -22,7 +22,7 @@ const items = [
     title: "第一步：注册用户",
     text: "输入常用邮箱和密码注册用户",
     icon: "mdi-account-plus-outline",
-    link: "/login",
+    link: "/register",
   },
   {
     id: useId(),
