@@ -24,7 +24,7 @@ const email = ref("")
 const supabase = useSupabaseClient()
 async function resetPassword() {
   await supabase.auth.resetPasswordForEmail(email.value, {
-    redirectTo: "http://localhost:3000/changepassword",
+    redirectTo: "https://cornsnaky.dearfad.com/changepassword",
   })
 }
 </script>
