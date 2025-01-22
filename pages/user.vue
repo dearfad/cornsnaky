@@ -25,12 +25,14 @@
                 v-model="nickname"
                 label="昵称"
                 variant="outlined"
+                :disabled="stateStore.userName"
               />
               <v-btn
                 text="更改昵称"
                 block
                 size="large"
                 variant="flat"
+                :disabled="stateStore.userName"
                 @click="changeName"
               />
             </v-sheet>
@@ -39,12 +41,14 @@
                 v-model="groupcode"
                 label="输入邀请码"
                 variant="outlined"
+                :disabled="stateStore.userGroup"
               />
               <v-btn
                 block
                 size="large"
                 variant="flat"
                 text="加入组"
+                :disabled="stateStore.userGroup"
                 @click="joinGroup"
               />
             </v-sheet>
@@ -53,17 +57,20 @@
                 v-model="groupname"
                 label="组名"
                 variant="outlined"
+                :disabled="stateStore.userGroup"
               />
               <v-text-field
                 v-model="groupcode"
                 label="邀请码"
                 variant="outlined"
+                :disabled="stateStore.userGroup"
               />
               <v-btn
                 block
                 size="large"
                 variant="flat"
                 text="创建并加入组"
+                :disabled="stateStore.userGroup"
                 @click="createGroup"
               />
             </v-sheet>
@@ -71,9 +78,6 @@
         </v-col>
         <v-col />
       </v-row>
-      <v-snackbar v-model="snackBar" timeout="2000"
-        ><div class="text-center">{{ snackBarText }}</div></v-snackbar
-      >
     </v-container>
   </ClientOnly>
 </template>
@@ -95,8 +99,7 @@ const stateStore = useStateStore()
 const signOut = async () => {
   const { error } = await supabase.auth.signOut()
   if (error) {
-    snackBarText.value = error
-    snackBar.value = true
+    stateStore.appInfo = error
   } else {
     stateStore.newUser()
     router.push("/")
@@ -111,12 +114,10 @@ const changeName = async () => {
     })
     .eq("id", user.value.id)
   if (error) {
-    snackBarText.value = error
-    snackBar.value = true
+    stateStore.appInfo = error
   } else {
     stateStore.userName = nickname.value
-    snackBarText.value = "更改昵称成功"
-    snackBar.value = true
+    stateStore.appInfo = "更改昵称成功"
   }
 }
 
@@ -130,46 +131,40 @@ async function createGroup() {
     snackBarText.value = error
     snackBar.value = true
   } else {
-    snackBarText.value = "创建组成功"
-    snackBar.value = true
+    stateStore.appInfo = "创建组成功"
     const { error: error2 } = await supabase
       .from("users")
       .update({ group: groupname.value, isleader: true })
       .eq("id", stateStore.userId)
     if (error2) {
-      snackBarText.value = error2
-      snackBar.value = true
+      stateStore.appInfo = error2
     } else {
       stateStore.userGroup = groupname.value
-      snackBarText.value = "加入组成功"
-      snackBar.value = true
+      stateStore.userIsLeader = true
+      stateStore.appInfo = "加入组成功"
     }
   }
 }
 
 async function joinGroup() {
-  const { data, error } = await supabase
+  const { data, errorSelect } = await supabase
     .from("groups")
     .select()
     .eq("code", groupcode.value)
-  if (error) {
-    snackBarText.value = error
-    snackBar.value = true
+  if (errorSelect) {
+    stateStore.appInfo = errorSelect
   } else if (data.length === 0) {
-    snackBarText.value = "邀请码无效"
-    snackBar.value = true
+    stateStore.appInfo = "邀请码无效"
   } else {
-    const { error: error2 } = await supabase
+    const { error: errorUpdate } = await supabase
       .from("users")
       .update({ group: data[0].name })
       .eq("id", user.value.id)
-    if (error2) {
-      snackBarText.value = error2
-      snackBar.value = true
+    if (errorUpdate) {
+      stateStore.appInfo = errorUpdate
     } else {
       stateStore.userGroup = data[0].name
-      snackBarText.value = "加入组成功"
-      snackBar.value = true
+      stateStore.appInfo = "加入组成功"
     }
   }
 }

@@ -3,6 +3,8 @@ export const useStateStore = defineStore(
   () => {
     // NavDrawer
     const isNavDrawerShow = ref(false)
+    // AppInfo
+    const appInfo = ref("")
     // User
     const userId = ref("")
     const userEmail = ref("")
@@ -64,6 +66,7 @@ export const useStateStore = defineStore(
 
     return {
       isNavDrawerShow,
+      appInfo,
 
       userId,
       userEmail,

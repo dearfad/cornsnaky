@@ -53,10 +53,6 @@
         当前登录：{{ user.email }}
       </v-col>
     </v-row>
-
-    <v-snackbar v-model="snackBar" timeout="2000"
-      ><div class="text-center">{{ snackBarText }}</div></v-snackbar
-    >
   </v-container>
 </template>
 <script setup>
@@ -66,45 +62,38 @@ const stateStore = useStateStore()
 const router = useRouter()
 const email = ref("")
 const password = ref("")
-const snackBar = ref(false)
-const snackBarText = ref("")
 const isRegistering = ref(false)
 
 const signOut = async () => {
   const { error } = await supabase.auth.signOut()
   if (error) {
-    snackBarText.value = error
-    snackBar.value = true
+    stateStore.appInfo = error
   } else {
     stateStore.newUser()
-    snackBarText.value = "退出成功"
-    snackBar.value = true
+    stateStore.appInfo = "退出成功"
   }
 }
 
 const signUpNewUser = async () => {
   isRegistering.value = true
   stateStore.newUser()
-  const { data, error } = await supabase.auth.signUp({
+  const { data, error: errorSignUp } = await supabase.auth.signUp({
     email: email.value,
     password: password.value,
   })
-  if (error) {
-    snackBarText.value = error
-    snackBar.value = true
+  if (errorSignUp) {
+    stateStore.appInfo = error
     isRegistering.value = false
   } else {
     const { error: errorInsert } = await supabase
       .from("users")
-      .insert([{ id: data.user.id, name: data.user.email }])
+      .insert([{ id: data.user.id }])
       .select()
     if (errorInsert) {
-      snackBarText.value = errorInsert
-      snackBar.value = true
+      stateStore.appInfo = errorInsert
       isRegistering.value = false
     } else {
-      snackBarText.value = "注册成功"
-      snackBar.value = true
+      stateStore.appInfo = "注册成功"
       await stateStore.getUserInfo()
       isRegistering.value = false
       router.push("/user")

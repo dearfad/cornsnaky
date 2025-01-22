@@ -34,6 +34,11 @@
     </v-row>
     <v-row>
       <v-col cols="12" md="3" class="mx-auto">
+        <v-btn size="large" block to="/resetpassword">忘记密码</v-btn>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12" md="3" class="mx-auto">
         <v-btn
           size="large"
           block
@@ -53,18 +58,12 @@
         当前登录：{{ user.email }}
       </v-col>
     </v-row>
-
-    <v-snackbar v-model="snackBar" timeout="2000"
-      ><div class="text-center">{{ snackBarText }}</div></v-snackbar
-    >
   </v-container>
 </template>
 <script setup>
 const supabase = useSupabaseClient()
 const email = ref("")
 const password = ref("")
-const snackBar = ref(false)
-const snackBarText = ref("")
 const router = useRouter()
 const stateStore = useStateStore()
 const isLogging = ref(false)
@@ -80,15 +79,14 @@ const signInWithPassword = async () => {
   if (error) {
     switch (error.code) {
       case "invalid_credentials":
-        snackBarText.value = "认证失败：登录凭证无效"
+        stateStore.appInfo = "认证失败：登录凭证无效"
         break
       case "validation_failed":
-        snackBarText.value = "认证失败：请填写邮箱和密码"
+        stateStore.appInfo = "认证失败：请填写邮箱和密码"
         break
       default:
-        snackBarText.value = error
+        stateStore.appInfo = error
     }
-    snackBar.value = true
     isLogging.value = false
   } else {
     await stateStore.getUserInfo()
@@ -100,12 +98,10 @@ const signInWithPassword = async () => {
 const signOut = async () => {
   const { error } = await supabase.auth.signOut()
   if (error) {
-    snackBarText.value = error
-    snackBar.value = true
+    stateStore.appInfo = error
   } else {
     stateStore.newUser()
-    snackBarText.value = "退出成功"
-    snackBar.value = true
+    stateStore.appInfo = "退出成功"
   }
 }
 </script>
