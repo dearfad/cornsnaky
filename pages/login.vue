@@ -34,7 +34,13 @@
     </v-row>
     <v-row>
       <v-col cols="12" md="3" class="mx-auto">
-        <v-btn size="large" block to="/resetpassword">忘记密码</v-btn>
+        <v-btn
+          size="large"
+          block
+          to="/resetpassword"
+          :disabled="stateStore.userId ? true : false"
+          >忘记密码</v-btn
+        >
       </v-col>
     </v-row>
     <v-row>

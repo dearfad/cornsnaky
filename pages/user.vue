@@ -6,10 +6,10 @@
         <v-col cols="12" md="4">
           <v-sheet class="d-flex flex-column">
             <v-sheet :elevation="1" class="pa-4 ma-2">
-              <v-sheet class="text-center font-weight-bold text-h3 my-2">{{
+              <v-sheet class="text-center font-weight-bold text-h5 my-2">{{
                 stateStore.userName + "@" + stateStore.userGroup
               }}</v-sheet>
-              <v-sheet class="text-center font-weight-bold text-h4 my-2">
+              <v-sheet class="text-center font-weight-bold text-h6 my-2">
                 {{ stateStore.userIsLeader ? "队长" : "队员" }}
               </v-sheet>
               <v-btn
