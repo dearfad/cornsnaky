@@ -22,9 +22,15 @@
 <script setup>
 const email = ref("")
 const supabase = useSupabaseClient()
+const stateStore = useStateStore()
 async function resetPassword() {
-  await supabase.auth.resetPasswordForEmail(email.value, {
+  const { error } = await supabase.auth.resetPasswordForEmail(email.value, {
     redirectTo: "https://cornsnaky.dearfad.com/changepassword",
   })
+  if (error) {
+    stateStore.appInfo = error
+  } else {
+    stateStore.appInfo = "重置密码链接已发送到您的邮箱"
+  }
 }
 </script>

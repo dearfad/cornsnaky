@@ -22,7 +22,13 @@
 <script setup>
 const password = ref("")
 const supabase = useSupabaseClient()
+const stateStore = useStateStore()
 async function changePassword() {
-  await supabase.auth.updateUser({ password: password.value })
+  const { error } = await supabase.auth.updateUser({ password: password.value })
+  if (error) {
+    stateStore.appInfo = error
+  } else {
+    stateStore.appInfo = "密码更新成功"
+  }
 }
 </script>
