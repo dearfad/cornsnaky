@@ -19,6 +19,13 @@
                 variant="flat"
                 @click="signOut"
               />
+              <v-btn
+                text="开始答题"
+                block
+                size="large"
+                variant="flat"
+                to="/puzzle"
+              />
             </v-sheet>
             <v-sheet :elevation="1" class="pa-4 ma-2">
               <v-text-field

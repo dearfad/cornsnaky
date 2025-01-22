@@ -14,10 +14,11 @@ export const useStateStore = defineStore(
 
     const groupName = ref("")
     const groupLeader = ref("")
-    const groupMainscore = ref(0)
-    const groupSidescore = ref(0)
-    const groupScoretime = ref("")
-    const groupStarttime = ref("")
+    const groupMainScore = ref(0)
+    const groupSideScore = ref(0)
+    const groupScoreTime = ref("")
+    const groupStartTime = ref("")
+    const groupIsSolving = computed(() => (groupStartTime.value ? true : false))
 
     const supabase = useSupabaseClient()
     const user = useSupabaseUser()
@@ -43,25 +44,30 @@ export const useStateStore = defineStore(
     }
 
     async function getGroupInfo() {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("groups")
         .select("*")
         .eq("name", userGroup.value)
-      groupName.value = data[0].name
-      groupLeader.value = data[0].leader
-      groupMainscore.value = data[0].mainscore
-      groupSidescore.value = data[0].sidescore
-      groupScoretime.value = data[0].scoretime
-      groupStarttime.value = data[0].starttime
+      if (error) {
+        appInfo.value = error
+      } else {
+        groupName.value = data[0].name
+        groupLeader.value = data[0].leader
+        groupMainScore.value = data[0].mainscore
+        groupSideScore.value = data[0].sidescore
+        groupScoreTime.value = data[0].scoretime
+        groupStartTime.value = data[0].starttime
+        appInfo.value = "刷新成功"
+      }
     }
 
     function newGroup() {
       groupName.value = ""
       groupLeader.value = ""
-      groupMainscore.value = 0
-      groupSidescore.value = 0
-      groupScoretime.value = ""
-      groupStarttime.value = ""
+      groupMainScore.value = 0
+      groupSideScore.value = 0
+      groupScoreTime.value = ""
+      groupStartTime.value = ""
     }
 
     return {
@@ -79,10 +85,11 @@ export const useStateStore = defineStore(
 
       groupName,
       groupLeader,
-      groupMainscore,
-      groupSidescore,
-      groupScoretime,
-      groupStarttime,
+      groupMainScore,
+      groupSideScore,
+      groupScoreTime,
+      groupStartTime,
+      groupIsSolving,
       newGroup,
     }
   },
