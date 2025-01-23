@@ -1,25 +1,133 @@
 <template>
   <v-container>
     <v-row>
-      <div>
-        1、 左8 右4栏 2、 Group 0 主线2题。支线不显示 3、
-        选择题时出现题干，然后回答，回答对准，限20次，整个队伍。组队后，组长选择开始答题，每分钟10点，购买答题点，购买次数，都可以买答题次数。
-        有提示答题点数，剩余次数。 4、 答对一道增加1分。队伍都不用再答。 5、
-        支线是主线分数 4或 a主线对题数 6、 支线对题B 主线显示题 min(8, 2+a+b)
-        7、 主线都答对。 8、 截止时间点。
-      </div>
-    </v-row>
-    <v-row>
       <v-col />
-      <v-col>
-        <v-sheet class="d-flex flex-column"> LEFT </v-sheet>
-      </v-col>
-      <v-col>
-        <v-sheet class="d-flex flex-column"> RIGHT </v-sheet>
+      <v-col cols="12" md="8">
+        <v-row>
+          <v-col cols="12" md="6">
+            <v-timeline side="end">
+              <v-timeline-item
+                v-for="item in mainPuzzle"
+                :key="item.id"
+                dot-color="green"
+                :icon="item.icon"
+              >
+                <v-card
+                  :title="item.title"
+                  :subtitle="item.text"
+                  variant="flat"
+              /></v-timeline-item>
+            </v-timeline>
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-timeline side="end" density="comfortable">
+              <v-timeline-item
+                v-for="item in sidePuzzle"
+                :key="item.id"
+                dot-color="green"
+                :icon="item.icon"
+              >
+                <v-card
+                  :title="item.title"
+                  :subtitle="item.text"
+                  variant="flat"
+              /></v-timeline-item>
+            </v-timeline>
+          </v-col>
+        </v-row>
       </v-col>
       <v-col />
     </v-row>
   </v-container>
 </template>
 
-<script setup></script>
+<script setup>
+const mainPuzzle = [
+  {
+    id: useId(),
+    title: "主线任务",
+    text: "通过大语言模型生成病例",
+    icon: "mdi-wrench-outline",
+  },
+  {
+    id: useId(),
+    title: "第一步：生成病例（ Case ）",
+    text: "通过大语言模型生成病例",
+    icon: "mdi-wrench-outline",
+  },
+  {
+    id: useId(),
+    title: "第二步：编写故事 ( Story )",
+    text: "疾病对患者生活影响的故事",
+    icon: "mdi-book-open-outline",
+  },
+  {
+    id: useId(),
+    title: "第三步：设计问题 ( Test )",
+    text: "获得患者资料后生成相关的问题",
+    icon: "mdi-ab-testing",
+  },
+  {
+    id: useId(),
+    title: "第四步：模拟问诊 ( Act )",
+    text: "模拟门诊问诊过程以获得患者资料",
+    icon: "mdi-account-outline",
+  },
+  {
+    id: useId(),
+    title: "第五步：评估能力 ( Rate )",
+    text: "模拟问答过程进而了解诊疗能力",
+    icon: "mdi-shield-star-outline",
+  },
+  {
+    id: useId(),
+    title: "第六步：评估能力 ( Rate )",
+    text: "模拟问答过程进而了解诊疗能力",
+    icon: "mdi-shield-star-outline",
+  },
+  {
+    id: useId(),
+    title: "第七步：评估能力 ( Rate )",
+    text: "模拟问答过程进而了解诊疗能力",
+    icon: "mdi-shield-star-outline",
+  },
+  {
+    id: useId(),
+    title: "第八步：评估能力 ( Rate )",
+    text: "模拟问答过程进而了解诊疗能力",
+    icon: "mdi-shield-star-outline",
+  },
+]
+const sidePuzzle = [
+  {
+    id: useId(),
+    title: "支线任务",
+    text: "通过大语言模型生成病例",
+    icon: "mdi-wrench-outline",
+  },
+  {
+    id: useId(),
+    title: "第一步：生成病例（ Case ）",
+    text: "通过大语言模型生成病例",
+    icon: "mdi-wrench-outline",
+  },
+  {
+    id: useId(),
+    title: "第二步：编写故事 ( Story )",
+    text: "疾病对患者生活影响的故事",
+    icon: "mdi-book-open-outline",
+  },
+  {
+    id: useId(),
+    title: "第三步：设计问题 ( Test )",
+    text: "获得患者资料后生成相关的问题",
+    icon: "mdi-ab-testing",
+  },
+  {
+    id: useId(),
+    title: "第四步：模拟问诊 ( Act )",
+    text: "模拟门诊问诊过程以获得患者资料",
+    icon: "mdi-account-outline",
+  },
+]
+</script>

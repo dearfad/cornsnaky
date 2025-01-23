@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     "@nuxt/eslint",
     "@pinia/nuxt",
     "pinia-plugin-persistedstate/nuxt",
+    "@nuxtjs/mdc",
   ],
   supabase: {
     redirect: false,

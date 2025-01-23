@@ -1,26 +1,32 @@
 <template>
-  <v-sheet>
-    <v-btn block size="x-large" @click="refreshGroupInfo">刷新小队信息</v-btn>
-    <v-sheet>
-      主线分数：{{ stateStore.groupMainScore }} / 支线分数：{{
-        stateStore.groupSideScore
-      }}
+  <v-sheet class="pa-4 ma-4" :elevation="2" height="200">
+    <v-sheet class="my-2">
+      当前分数：{{ stateStore.groupMainScore }} /
+      {{ stateStore.groupSideScore }}
     </v-sheet>
-    <v-sheet>
-      小队开始时间：{{ stateStore.groupStartTime }} / 最近主线得分时间：{{
-        stateStore.groupScoreTime
-      }}
-    </v-sheet>
+    <v-sheet class="my-2">开始时间：{{ stateStore.groupStartTime }}</v-sheet>
+    <v-sheet class="my-2">得分时间：{{ stateStore.groupScoreTime }}</v-sheet>
+    <v-btn
+      block
+      size="default"
+      variant="outlined"
+      class="mt-4"
+      @click="refreshGroupInfo"
+      >刷新小队信息</v-btn
+    >
     <v-sheet v-if="stateStore.userIsLeader && !stateStore.groupIsSolving">
       <v-alert
         density="compact"
         type="warning"
-        title="注意"
+        title="队长注意"
         variant="outlined"
         color="primary"
-        text="小队队长点击开始答题后，计时开始！"
+        text="请通知所有队员后点击开始答题！"
+        class="my-4"
       />
-      <v-btn block size="x-large" @click="startPuzzle">开始答题</v-btn>
+      <v-btn block size="x-large" class="my-2" @click="startPuzzle"
+        ><span class="font-weight-bold">开始答题</span></v-btn
+      >
     </v-sheet>
   </v-sheet>
 </template>
@@ -28,9 +34,17 @@
 <script setup>
 const stateStore = useStateStore()
 const supabase = useSupabaseClient()
+
+onMounted(async () => {
+  if (!stateStore.groupName) {
+    await stateStore.getGroupInfo()
+  }
+})
+
 async function refreshGroupInfo() {
   await stateStore.getGroupInfo()
 }
+
 async function startPuzzle() {
   const { error } = await supabase
     .from("groups")

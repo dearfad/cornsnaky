@@ -13,6 +13,7 @@
     "@mdi/font": "^7.4.47",
     "@nuxt/eslint": "^0.7.5",
     "@nuxthub/core": "^0.8.13",
+    "@nuxtjs/mdc": "^0.13.1",
     "@nuxtjs/supabase": "^1.4.6",
     "@pinia/nuxt": "^0.9.0",
     "eslint": "^9.18.0",

@@ -56,11 +56,20 @@ export const useStateStore = defineStore(
         groupMainScore.value = data[0].mainscore
         groupSideScore.value = data[0].sidescore
         groupScoreTime.value = data[0].scoretime
-        groupStartTime.value = data[0].starttime
+        groupStartTime.value = getStartTime(data[0].starttime)
         appInfo.value = "刷新成功"
       }
     }
 
+    function getStartTime(time) {
+      const utcDate = new Date(time)
+      const beijingDate = new Date(utcDate.getTime() + 8 * 60 * 60 * 1000)
+      const beijingTimeStr = beijingDate
+        .toISOString()
+        .replace("T", " ")
+        .substring(0, 19)
+      return beijingTimeStr
+    }
     function newGroup() {
       groupName.value = ""
       groupLeader.value = ""
