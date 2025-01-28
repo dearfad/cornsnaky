@@ -11,6 +11,9 @@ export default defineNuxtConfig({
     "pinia-plugin-persistedstate/nuxt",
     "@nuxtjs/mdc",
   ],
+  piniaPluginPersistedstate: {
+    storage: "localStorage",
+  },
   supabase: {
     redirect: false,
   },

@@ -21,11 +21,22 @@ export const useStateStore = defineStore(
     const groupUsedPoints = ref(0)
     const groupCurrentPoints = computed(() => {
       return Math.floor(
-        (new Date() - new Date(groupStartTime.value)) / (1000 * 60 * 100) -
+        ((new Date() - new Date(groupStartTime.value)) / (1000 * 60)) * 5 -
           groupUsedPoints.value
       )
     })
     const groupIsSolving = computed(() => (groupStartTime.value ? true : false))
+
+    const puzzles = ref([
+      {
+        id: 0,
+        name: "谜题1",
+      },
+      {},
+    ])
+    const puzzleMain = ref([])
+    const puzzleSide = ref([])
+    const puzzleCurrentId = ref(1)
 
     const supabase = useSupabaseClient()
     const user = useSupabaseUser()
@@ -65,8 +76,77 @@ export const useStateStore = defineStore(
         groupScoreTime.value = getBeijingTime(data[0].scoretime)
         groupStartTime.value = getBeijingTime(data[0].starttime)
         groupUsedPoints.value = data[0].usedpoints
-        console.log(data[0])
+        await getPuzzleInfo()
         appInfo.value = "刷新成功"
+      }
+    }
+
+    async function getPuzzleInfo() {
+      const { data, error } = await supabase
+        .from("puzzles")
+        .select("id, name")
+        .order("id", { ascending: true })
+      if (error) {
+        appInfo.value = error
+      } else {
+        puzzleMain.value = data.slice(0, 8)
+        puzzleSide.value = data.slice(8, 12)
+        puzzles.value = data.map((item) => {
+          item.content = ""
+          return item
+        })
+      }
+    }
+
+    async function getPuzzleDetail() {
+      const { data, error } = await supabase
+        .from("puzzles")
+        .select("*")
+        .eq("id", puzzleCurrentId.value)
+      if (error) {
+        appInfo.value = error
+      } else {
+        puzzles.value[puzzleCurrentId.value - 1].content = data[0].content
+        puzzles.value[puzzleCurrentId.value - 1].images = data[0].images
+        puzzles.value[puzzleCurrentId.value - 1].file = data[0].file
+        puzzles.value[puzzleCurrentId.value - 1].audios = data[0].audios
+        console.log(data[0])
+        console.log(puzzles.value)
+        appInfo.value = "获取内容成功"
+      }
+    }
+
+    async function checkPuzzleAnswer(answer) {
+      console.log("checkPuzzleAnswer: ", answer)
+      const { data, error } = await supabase
+        .from("puzzles")
+        .select("answer")
+        .eq("id", puzzleCurrentId.value)
+      if (error) {
+        appInfo.value = error
+      } else {
+        if (answer === data[0].answer) {
+          // TODO: 更新分数 更新次数
+          const score =
+            puzzleCurrentId.value <= 8
+              ? { mainscore: groupMainScore.value + 1 }
+              : { sidescore: groupSideScore.value + 1 }
+          const { error: grouperror } = await supabase
+            .from("groups")
+            .update(score)
+            .eq("name", groupName.value)
+            .select()
+          if (grouperror) {
+            appInfo.value = grouperror
+          } else {
+            await getGroupInfo()
+            appInfo.value = "分数更新成功"
+          }
+
+          appInfo.value = "答案正确"
+        } else {
+          appInfo.value = "答案错误"
+        }
       }
     }
 
@@ -113,6 +193,13 @@ export const useStateStore = defineStore(
       groupUsedPoints,
       groupCurrentPoints,
       newGroup,
+
+      puzzles,
+      puzzleMain,
+      puzzleSide,
+      puzzleCurrentId,
+      getPuzzleDetail,
+      checkPuzzleAnswer,
     }
   },
   { persist: true }
