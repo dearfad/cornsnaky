@@ -32,14 +32,12 @@
                 v-model="nickname"
                 label="昵称"
                 variant="outlined"
-                :disabled="stateStore.userName"
               />
               <v-btn
                 text="更改昵称"
                 block
                 size="large"
                 variant="flat"
-                :disabled="stateStore.userName"
                 @click="changeName"
               />
             </v-sheet>
@@ -48,14 +46,14 @@
                 v-model="groupcode"
                 label="输入邀请码"
                 variant="outlined"
-                :disabled="stateStore.userGroup"
+                :disabled="stateStore.userGroup ? true : false"
               />
               <v-btn
                 block
                 size="large"
                 variant="flat"
                 text="加入组"
-                :disabled="stateStore.userGroup"
+                :disabled="stateStore.userGroup ? true : false"
                 @click="joinGroup"
               />
             </v-sheet>
@@ -64,20 +62,20 @@
                 v-model="groupname"
                 label="组名"
                 variant="outlined"
-                :disabled="stateStore.userGroup"
+                :disabled="stateStore.userGroup ? true : false"
               />
               <v-text-field
                 v-model="groupcode"
                 label="邀请码"
                 variant="outlined"
-                :disabled="stateStore.userGroup"
+                :disabled="stateStore.userGroup ? true : false"
               />
               <v-btn
                 block
                 size="large"
                 variant="flat"
                 text="创建并加入组"
-                :disabled="stateStore.userGroup"
+                :disabled="stateStore.userGroup ? true : false"
                 @click="createGroup"
               />
             </v-sheet>

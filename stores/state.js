@@ -18,6 +18,13 @@ export const useStateStore = defineStore(
     const groupSideScore = ref(0)
     const groupScoreTime = ref("")
     const groupStartTime = ref("")
+    const groupUsedPoints = ref(0)
+    const groupCurrentPoints = computed(() => {
+      return Math.floor(
+        (new Date() - new Date(groupStartTime.value)) / (1000 * 60 * 100) -
+          groupUsedPoints.value
+      )
+    })
     const groupIsSolving = computed(() => (groupStartTime.value ? true : false))
 
     const supabase = useSupabaseClient()
@@ -55,13 +62,15 @@ export const useStateStore = defineStore(
         groupLeader.value = data[0].leader
         groupMainScore.value = data[0].mainscore
         groupSideScore.value = data[0].sidescore
-        groupScoreTime.value = data[0].scoretime
-        groupStartTime.value = getStartTime(data[0].starttime)
+        groupScoreTime.value = getBeijingTime(data[0].scoretime)
+        groupStartTime.value = getBeijingTime(data[0].starttime)
+        groupUsedPoints.value = data[0].usedpoints
+        console.log(data[0])
         appInfo.value = "刷新成功"
       }
     }
 
-    function getStartTime(time) {
+    function getBeijingTime(time) {
       const utcDate = new Date(time)
       const beijingDate = new Date(utcDate.getTime() + 8 * 60 * 60 * 1000)
       const beijingTimeStr = beijingDate
@@ -70,6 +79,7 @@ export const useStateStore = defineStore(
         .substring(0, 19)
       return beijingTimeStr
     }
+
     function newGroup() {
       groupName.value = ""
       groupLeader.value = ""
@@ -77,6 +87,7 @@ export const useStateStore = defineStore(
       groupSideScore.value = 0
       groupScoreTime.value = ""
       groupStartTime.value = ""
+      groupUsedPoints.value = 0
     }
 
     return {
@@ -99,6 +110,8 @@ export const useStateStore = defineStore(
       groupScoreTime,
       groupStartTime,
       groupIsSolving,
+      groupUsedPoints,
+      groupCurrentPoints,
       newGroup,
     }
   },

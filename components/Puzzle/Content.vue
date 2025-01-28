@@ -1,133 +1,69 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col />
-      <v-col cols="12" md="8">
-        <v-row>
-          <v-col cols="12" md="6">
-            <v-timeline side="end">
-              <v-timeline-item
-                v-for="item in mainPuzzle"
-                :key="item.id"
-                dot-color="green"
-                :icon="item.icon"
-              >
-                <v-card
-                  :title="item.title"
-                  :subtitle="item.text"
-                  variant="flat"
-              /></v-timeline-item>
-            </v-timeline>
-          </v-col>
-          <v-col cols="12" md="6">
-            <v-timeline side="end" density="comfortable">
-              <v-timeline-item
-                v-for="item in sidePuzzle"
-                :key="item.id"
-                dot-color="green"
-                :icon="item.icon"
-              >
-                <v-card
-                  :title="item.title"
-                  :subtitle="item.text"
-                  variant="flat"
-              /></v-timeline-item>
-            </v-timeline>
-          </v-col>
-        </v-row>
-      </v-col>
-      <v-col />
-    </v-row>
-  </v-container>
+  <v-card class="px-4 mt-8" hover>
+    <v-card-item>
+      <v-card-title class="text-h5 font-weight-black">
+        汉字听写大会
+      </v-card-title>
+      <v-card-subtitle> 主线任务 </v-card-subtitle>
+    </v-card-item>
+    <v-card-text class="pt-4 text-body-1">
+      活动目的：通过汉字听写的形式，激发学生对汉字文化的兴趣，提高汉字书写能力，传承和弘扬中华优秀传统文化。
+      活动时间：[具体日期] 活动地点：[具体地点] 活动对象：[年级]学生 活动流程：
+      开场致辞：主持人介绍活动目的和规则。
+      听写环节：主持人念出汉字，学生在规定时间内书写。
+      评分环节：评委根据书写规范和准确性进行评分。
+      颁奖环节：为优秀学生颁发奖状和奖品。
+      活动意义：汉字是中华文化的瑰宝，通过听写大会，让学生在书写中感受汉字的魅力，增强文化自信，为传承中华文化贡献力量。
+    </v-card-text>
+    <v-container class="px-3">
+      <v-row>
+        <v-col v-for="n in 7" :key="n">
+          <v-sheet color="blue-lighten-4" height="200" width="300" rounded />
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-sheet>
+      <v-btn
+        text="下载附加文件"
+        class="font-weight-bold my-4"
+        size="large"
+        block
+      />
+    </v-sheet>
+    <v-card-actions>
+      <v-btn
+        text="购买提示"
+        variant="flat"
+        color="red"
+        elevation="2"
+        width="100"
+      />
+      <v-spacer />
+      <v-btn
+        :icon="isTipShow ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+        @click="isTipShow = !isTipShow"
+      />
+    </v-card-actions>
+    <v-expand-transition>
+      <div v-show="isTipShow">
+        <v-divider />
+        <v-card-text>
+          I'm a thing. But, like most politicians, he promised more than he
+          could deliver. You won't have time for sleeping, soldier, not with all
+          the bed making you'll be doing. Then we'll go with that data file!
+          Hey, you add a one and two zeros to that or we walk! You're going to
+          do his laundry? I've got to find a way to escape.
+        </v-card-text>
+      </div>
+    </v-expand-transition>
+
+    <v-sheet class="py-4">
+      <v-text-field label="请输入答案" variant="outlined" />
+      <v-btn text="提交答案" class="font-weight-bold" size="x-large" block />
+    </v-sheet>
+  </v-card>
 </template>
 
 <script setup>
-const mainPuzzle = [
-  {
-    id: useId(),
-    title: "主线任务",
-    text: "通过大语言模型生成病例",
-    icon: "mdi-wrench-outline",
-  },
-  {
-    id: useId(),
-    title: "第一步：生成病例（ Case ）",
-    text: "通过大语言模型生成病例",
-    icon: "mdi-wrench-outline",
-  },
-  {
-    id: useId(),
-    title: "第二步：编写故事 ( Story )",
-    text: "疾病对患者生活影响的故事",
-    icon: "mdi-book-open-outline",
-  },
-  {
-    id: useId(),
-    title: "第三步：设计问题 ( Test )",
-    text: "获得患者资料后生成相关的问题",
-    icon: "mdi-ab-testing",
-  },
-  {
-    id: useId(),
-    title: "第四步：模拟问诊 ( Act )",
-    text: "模拟门诊问诊过程以获得患者资料",
-    icon: "mdi-account-outline",
-  },
-  {
-    id: useId(),
-    title: "第五步：评估能力 ( Rate )",
-    text: "模拟问答过程进而了解诊疗能力",
-    icon: "mdi-shield-star-outline",
-  },
-  {
-    id: useId(),
-    title: "第六步：评估能力 ( Rate )",
-    text: "模拟问答过程进而了解诊疗能力",
-    icon: "mdi-shield-star-outline",
-  },
-  {
-    id: useId(),
-    title: "第七步：评估能力 ( Rate )",
-    text: "模拟问答过程进而了解诊疗能力",
-    icon: "mdi-shield-star-outline",
-  },
-  {
-    id: useId(),
-    title: "第八步：评估能力 ( Rate )",
-    text: "模拟问答过程进而了解诊疗能力",
-    icon: "mdi-shield-star-outline",
-  },
-]
-const sidePuzzle = [
-  {
-    id: useId(),
-    title: "支线任务",
-    text: "通过大语言模型生成病例",
-    icon: "mdi-wrench-outline",
-  },
-  {
-    id: useId(),
-    title: "第一步：生成病例（ Case ）",
-    text: "通过大语言模型生成病例",
-    icon: "mdi-wrench-outline",
-  },
-  {
-    id: useId(),
-    title: "第二步：编写故事 ( Story )",
-    text: "疾病对患者生活影响的故事",
-    icon: "mdi-book-open-outline",
-  },
-  {
-    id: useId(),
-    title: "第三步：设计问题 ( Test )",
-    text: "获得患者资料后生成相关的问题",
-    icon: "mdi-ab-testing",
-  },
-  {
-    id: useId(),
-    title: "第四步：模拟问诊 ( Act )",
-    text: "模拟门诊问诊过程以获得患者资料",
-    icon: "mdi-account-outline",
-  },
-]
+const isTipShow = ref(false)
 </script>

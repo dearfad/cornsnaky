@@ -4,9 +4,9 @@
       <v-col />
       <v-col cols="10">
         <v-img
-          max-width="300"
-          min-height="300"
-          class="mx-auto"
+          max-width="350"
+          min-height="280"
+          class="mx-auto my-8"
           src="/heroimage.jpg"
           rounded="circle"
         />

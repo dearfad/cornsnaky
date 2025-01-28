@@ -1,18 +1,21 @@
 <template>
-  <v-timeline side="end">
-    <v-timeline-item
-      v-for="item in items"
-      :key="item.id"
-      dot-color="green"
-      :icon="item.icon"
-    >
-      <v-card
-        :title="item.title"
-        :subtitle="item.text"
-        variant="flat"
-        :to="item.link"
-    /></v-timeline-item>
-  </v-timeline>
+  <v-sheet>
+    <v-timeline side="end">
+      <v-timeline-item
+        v-for="item in items"
+        :key="item.id"
+        dot-color="green"
+        :icon="item.icon"
+      >
+        <v-card
+          :title="item.title"
+          :subtitle="item.text"
+          variant="flat"
+          :to="item.link"
+      /></v-timeline-item>
+    </v-timeline>
+    <PuzzleRule />
+  </v-sheet>
 </template>
 
 <script setup>
