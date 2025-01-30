@@ -19,6 +19,7 @@ export const useStateStore = defineStore(
     const groupScoreTime = ref("")
     const groupStartTime = ref("")
     const groupUsedPoints = ref(0)
+    const groupAnswerCount = ref([])
     const groupCurrentPoints = computed(() => {
       return Math.floor(
         ((new Date() - new Date(groupStartTime.value)) / (1000 * 60)) * 5 -
@@ -27,13 +28,8 @@ export const useStateStore = defineStore(
     })
     const groupIsSolving = computed(() => (groupStartTime.value ? true : false))
 
-    const puzzles = ref([
-      {
-        id: 0,
-        name: "谜题1",
-      },
-      {},
-    ])
+    const puzzles = ref([])
+    const puzzleTips = ref([])
     const puzzleMain = ref([])
     const puzzleSide = ref([])
     const puzzleCurrentId = ref(1)
@@ -76,6 +72,7 @@ export const useStateStore = defineStore(
         groupScoreTime.value = getBeijingTime(data[0].scoretime)
         groupStartTime.value = getBeijingTime(data[0].starttime)
         groupUsedPoints.value = data[0].usedpoints
+        groupAnswerCount.value = data[0].count
         await getPuzzleInfo()
         appInfo.value = "刷新成功"
       }
@@ -110,14 +107,12 @@ export const useStateStore = defineStore(
         puzzles.value[puzzleCurrentId.value - 1].images = data[0].images
         puzzles.value[puzzleCurrentId.value - 1].file = data[0].file
         puzzles.value[puzzleCurrentId.value - 1].audios = data[0].audios
-        console.log(data[0])
-        console.log(puzzles.value)
+        puzzles.value[puzzleCurrentId.value - 1].tips = data[0].tips
         appInfo.value = "获取内容成功"
       }
     }
 
     async function checkPuzzleAnswer(answer) {
-      console.log("checkPuzzleAnswer: ", answer)
       const { data, error } = await supabase
         .from("puzzles")
         .select("answer")
@@ -125,8 +120,9 @@ export const useStateStore = defineStore(
       if (error) {
         appInfo.value = error
       } else {
+        groupAnswerCount.value[puzzleCurrentId.value - 1] += 1
+        await updateGroupCount()
         if (answer === data[0].answer) {
-          // TODO: 更新分数 更新次数
           const score =
             puzzleCurrentId.value <= 8
               ? { mainscore: groupMainScore.value + 1 }
@@ -147,6 +143,19 @@ export const useStateStore = defineStore(
         } else {
           appInfo.value = "答案错误"
         }
+      }
+    }
+
+    async function updateGroupCount() {
+      const { error } = await supabase
+        .from("groups")
+        .update({ count: groupAnswerCount.value })
+        .eq("name", groupName.value)
+        .select()
+      if (error) {
+        appInfo.value = error
+      } else {
+        appInfo.value = "次数更新成功"
       }
     }
 
@@ -192,9 +201,11 @@ export const useStateStore = defineStore(
       groupIsSolving,
       groupUsedPoints,
       groupCurrentPoints,
+      groupAnswerCount,
       newGroup,
 
       puzzles,
+      puzzleTips,
       puzzleMain,
       puzzleSide,
       puzzleCurrentId,
