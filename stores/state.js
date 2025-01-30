@@ -20,6 +20,8 @@ export const useStateStore = defineStore(
     const groupStartTime = ref("")
     const groupUsedPoints = ref(0)
     const groupAnswerCount = ref([])
+    const groupCompleted = ref([])
+    const groupOpenTips = ref([])
     const groupCurrentPoints = computed(() => {
       return Math.floor(
         ((new Date() - new Date(groupStartTime.value)) / (1000 * 60)) * 5 -
@@ -73,6 +75,8 @@ export const useStateStore = defineStore(
         groupStartTime.value = getBeijingTime(data[0].starttime)
         groupUsedPoints.value = data[0].usedpoints
         groupAnswerCount.value = data[0].count
+        groupCompleted.value = data[0].completed
+        groupOpenTips.value = data[0].opentips
         await getPuzzleInfo()
         appInfo.value = "刷新成功"
       }
@@ -107,7 +111,16 @@ export const useStateStore = defineStore(
         puzzles.value[puzzleCurrentId.value - 1].images = data[0].images
         puzzles.value[puzzleCurrentId.value - 1].file = data[0].file
         puzzles.value[puzzleCurrentId.value - 1].audios = data[0].audios
-        puzzles.value[puzzleCurrentId.value - 1].tips = data[0].tips
+        puzzles.value[puzzleCurrentId.value - 1].tips = data[0].tips.map(
+          (item, n) => {
+            if (groupOpenTips.value[puzzleCurrentId.value - 1][n] === 1) {
+              item.content = data[0].tipcontent[n]
+            } else {
+              item.content = ""
+            }
+            return item
+          }
+        )
         appInfo.value = "获取内容成功"
       }
     }
@@ -123,22 +136,24 @@ export const useStateStore = defineStore(
         groupAnswerCount.value[puzzleCurrentId.value - 1] += 1
         await updateGroupCount()
         if (answer === data[0].answer) {
-          const score =
-            puzzleCurrentId.value <= 8
-              ? { mainscore: groupMainScore.value + 1 }
-              : { sidescore: groupSideScore.value + 1 }
-          const { error: grouperror } = await supabase
-            .from("groups")
-            .update(score)
-            .eq("name", groupName.value)
-            .select()
-          if (grouperror) {
-            appInfo.value = grouperror
-          } else {
-            await getGroupInfo()
-            appInfo.value = "分数更新成功"
+          if (groupCompleted.value[puzzleCurrentId.value - 1] === 0) {
+            groupCompleted.value[puzzleCurrentId.value - 1] = 1
+            const score =
+              puzzleCurrentId.value <= 8
+                ? { mainscore: groupMainScore.value + 1 }
+                : { sidescore: groupSideScore.value + 1 }
+            const { error: grouperror } = await supabase
+              .from("groups")
+              .update({ ...score, ...{ completed: groupCompleted.value } })
+              .eq("name", groupName.value)
+              .select()
+            if (grouperror) {
+              appInfo.value = grouperror
+            } else {
+              await getGroupInfo()
+              appInfo.value = "分数更新成功"
+            }
           }
-
           appInfo.value = "答案正确"
         } else {
           appInfo.value = "答案错误"
@@ -179,6 +194,24 @@ export const useStateStore = defineStore(
       groupUsedPoints.value = 0
     }
 
+    async function buyTip(n, price) {
+      groupUsedPoints.value += price
+      groupOpenTips.value[puzzleCurrentId.value - 1][n] = 1
+      const { error } = await supabase
+        .from("groups")
+        .update({
+          usedpoints: groupUsedPoints.value,
+          opentips: groupOpenTips.value,
+        })
+        .eq("name", groupName.value)
+        .select()
+      if (error) {
+        appInfo.value = error
+      } else {
+        appInfo.value = "刷新成功"
+      }
+    }
+
     return {
       isNavDrawerShow,
       appInfo,
@@ -202,6 +235,7 @@ export const useStateStore = defineStore(
       groupUsedPoints,
       groupCurrentPoints,
       groupAnswerCount,
+      groupCompleted,
       newGroup,
 
       puzzles,
@@ -211,6 +245,9 @@ export const useStateStore = defineStore(
       puzzleCurrentId,
       getPuzzleDetail,
       checkPuzzleAnswer,
+
+      groupOpenTips,
+      buyTip,
     }
   },
   { persist: true }

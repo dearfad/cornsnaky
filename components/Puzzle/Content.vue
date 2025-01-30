@@ -1,5 +1,5 @@
 <template>
-  <v-card class="px-4 mt-8" hover>
+  <v-card v-if="isReady" class="px-4 mt-8" hover>
     <ClientOnly>
       <v-card-item>
         <v-card-title class="text-h5 font-weight-black">
@@ -55,15 +55,16 @@
 </template>
 
 <script setup>
+const isReady = ref(false)
 const puzzleAnswer = ref("")
 const stateStore = useStateStore()
 
-onMounted(async () => {
+onBeforeMount(async () => {
   if (stateStore.puzzles.length === 0) {
     await stateStore.getGroupInfo()
-    await getPuzzleContent()
   }
   await getPuzzleContent()
+  isReady.value = true
 })
 
 watch(

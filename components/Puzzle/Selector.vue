@@ -17,20 +17,28 @@
       <v-row>
         <v-col v-for="(main, n) in stateStore.puzzleMain" :key="n" class="py-1">
           <v-btn
+            v-if="
+              main.id <
+              3 + stateStore.groupMainScore + stateStore.groupSideScore
+                ? true
+                : false
+            "
             prepend-icon="mdi-star"
             variant="outlined"
             size="large"
             block
-            :disabled="
-              main.id <
-              3 + stateStore.groupMainScore + stateStore.groupSideScore
-                ? false
-                : true
-            "
             @click="stateStore.puzzleCurrentId = main.id"
           >
             <template #prepend>
               <v-icon color="success" />
+            </template>
+
+            <template #append>
+              <v-icon
+                v-if="stateStore.groupCompleted[n] === 1 ? true : false"
+                icon="mdi-check"
+                color="red"
+              />
             </template>
             {{ main.name }}
           </v-btn>
@@ -50,17 +58,24 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col v-for="(side, n) in stateStore.puzzleSide" :key="n" class="py-1">
+        <v-col v-for="(side, i) in stateStore.puzzleSide" :key="i" class="py-1">
           <v-btn
+            v-if="side.id < 9 + stateStore.groupMainScore ? true : false"
             prepend-icon="mdi-creation"
             variant="outlined"
             size="large"
             block
-            :disabled="side.id < 9 + stateStore.groupMainScore ? false : true"
             @click="stateStore.puzzleCurrentId = side.id"
           >
             <template #prepend>
               <v-icon color="primary" />
+            </template>
+            <template #append>
+              <v-icon
+                v-if="stateStore.groupCompleted[i + 8] === 1 ? true : false"
+                icon="mdi-check"
+                color="red"
+              />
             </template>
             {{ side.name }}
           </v-btn>
