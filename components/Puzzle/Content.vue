@@ -24,16 +24,9 @@
           </v-col>
         </v-row>
       </v-container>
-      <v-sheet>
-        <v-btn
-          text="下载附加文件"
-          class="font-weight-bold my-4"
-          size="large"
-          block
-          @click="getPuzzleFile"
-        />
-      </v-sheet>
 
+      <PuzzleFile />
+      <PuzzleAudio />
       <PuzzleTips />
 
       <v-sheet class="py-4">
@@ -78,10 +71,6 @@ async function getPuzzleContent() {
   if (!stateStore.puzzles[stateStore.puzzleCurrentId - 1].content) {
     await stateStore.getPuzzleDetail()
   }
-}
-
-function getPuzzleFile() {
-  window.open(stateStore.puzzles[stateStore.puzzleCurrentId - 1].file, "_blank")
 }
 
 async function sendPuzzleAnswer() {
