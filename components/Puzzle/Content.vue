@@ -88,7 +88,7 @@ async function sendPuzzleAnswer() {
     stateStore.groupAnswerCount[stateStore.puzzleCurrentId - 1] -= 1
     await stateStore.checkPuzzleAnswer(puzzleAnswer.value)
   } else {
-    stateStore.appInfo("答题次数已经耗尽，请购买次数或者放弃！")
+    stateStore.appInfo = "答题次数已经耗尽，请购买次数或者放弃！"
   }
 }
 
@@ -96,7 +96,7 @@ async function buyAnswerCount() {
   if (stateStore.groupCurrentPoints >= 2000) {
     await stateStore.buyAnswerCount()
   } else {
-    stateStore.appInfo("点数不足，请充值！")
+    stateStore.appInfo = "点数不足，请充值！"
   }
 }
 </script>

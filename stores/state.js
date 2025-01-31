@@ -88,7 +88,7 @@ export const useStateStore = defineStore(
         groupScoreTime.value = data[0].scoretime
           ? getBeijingTime(data[0].scoretime)
           : null
-        groupStartTime.value = data[0].scoretime
+        groupStartTime.value = data[0].starttime
           ? getBeijingTime(data[0].starttime)
           : null
         groupUsedPoints.value = data[0].usedpoints
@@ -114,6 +114,7 @@ export const useStateStore = defineStore(
           item.content = ""
           return item
         })
+        await getPuzzleDetail()
       }
     }
 
@@ -139,7 +140,7 @@ export const useStateStore = defineStore(
             return item
           }
         )
-        appInfo.value = "获取内容成功"
+        // appInfo.value = "获取内容成功"
       }
     }
 
@@ -161,7 +162,11 @@ export const useStateStore = defineStore(
                 : { sidescore: groupSideScore.value + 1 }
             const { error: grouperror } = await supabase
               .from("groups")
-              .update({ ...score, ...{ completed: groupCompleted.value } })
+              .update({
+                ...score,
+                ...{ completed: groupCompleted.value },
+                ...{ scoretime: new Date() },
+              })
               .eq("name", groupName.value)
               .select()
             if (grouperror) {
@@ -201,16 +206,6 @@ export const useStateStore = defineStore(
       return beijingTimeStr
     }
 
-    function newGroup() {
-      groupName.value = ""
-      groupLeader.value = ""
-      groupMainScore.value = 0
-      groupSideScore.value = 0
-      groupScoreTime.value = ""
-      groupStartTime.value = ""
-      groupUsedPoints.value = 0
-    }
-
     async function buyTip(n, price) {
       groupUsedPoints.value += price
       groupOpenTips.value[puzzleCurrentId.value - 1][n] = 1
@@ -225,7 +220,7 @@ export const useStateStore = defineStore(
       if (error) {
         appInfo.value = error
       } else {
-        appInfo.value = "刷新成功"
+        // appInfo.value = "刷新成功"
       }
     }
 
