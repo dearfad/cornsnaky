@@ -85,7 +85,9 @@ async function getPuzzleContent() {
 
 async function sendPuzzleAnswer() {
   if (stateStore.groupAnswerCount[stateStore.puzzleCurrentId - 1] >= 1) {
-    stateStore.groupAnswerCount[stateStore.puzzleCurrentId - 1] -= 1
+    if (stateStore.groupCompleted[stateStore.puzzleCurrentId - 1] != 1) {
+      stateStore.groupAnswerCount[stateStore.puzzleCurrentId - 1] -= 1
+    }
     await stateStore.checkPuzzleAnswer(puzzleAnswer.value)
   } else {
     stateStore.appInfo = "答题次数已经耗尽，请购买次数或者放弃！"

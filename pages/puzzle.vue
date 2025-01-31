@@ -4,7 +4,7 @@
       <v-col cols="12" md="3">
         <PuzzleInfoCard />
       </v-col>
-      <v-col cols="12" md="9">
+      <v-col v-if="stateStore.groupStartTime ? true : false" cols="12" md="9">
         <PuzzleSelector />
         <PuzzleContent />
       </v-col>
@@ -16,5 +16,5 @@
 definePageMeta({
   middleware: "auth",
 })
-// const stateStore = useStateStore()
+const stateStore = useStateStore()
 </script>

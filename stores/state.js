@@ -59,6 +59,10 @@ export const useStateStore = defineStore(
       groupCompleted.value = []
       groupOpenTips.value = []
       puzzles.value = []
+      puzzleTips.value = []
+      puzzleMain.value = []
+      puzzleSide.value = []
+      puzzleCurrentId.value = 1
     }
 
     async function getUserInfo() {
