@@ -128,6 +128,7 @@ const changeName = async () => {
 }
 
 async function createGroup() {
+  stateStore.newGroup()
   const { error } = await supabase.from("groups").insert({
     name: groupname.value,
     code: groupcode.value,

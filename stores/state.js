@@ -47,6 +47,20 @@ export const useStateStore = defineStore(
       userIsLeader.value = false
     }
 
+    function newGroup() {
+      groupName.value = ""
+      groupLeader.value = ""
+      groupMainScore.value = 0
+      groupSideScore.value = 0
+      groupScoreTime.value = null
+      groupStartTime.value = null
+      groupUsedPoints.value = 0
+      groupAnswerCount.value = []
+      groupCompleted.value = []
+      groupOpenTips.value = []
+      puzzles.value = []
+    }
+
     async function getUserInfo() {
       userId.value = user.value.id
       userEmail.value = user.value.email
@@ -71,8 +85,12 @@ export const useStateStore = defineStore(
         groupLeader.value = data[0].leader
         groupMainScore.value = data[0].mainscore
         groupSideScore.value = data[0].sidescore
-        groupScoreTime.value = getBeijingTime(data[0].scoretime)
-        groupStartTime.value = getBeijingTime(data[0].starttime)
+        groupScoreTime.value = data[0].scoretime
+          ? getBeijingTime(data[0].scoretime)
+          : null
+        groupStartTime.value = data[0].scoretime
+          ? getBeijingTime(data[0].starttime)
+          : null
         groupUsedPoints.value = data[0].usedpoints
         groupAnswerCount.value = data[0].count
         groupCompleted.value = data[0].completed
