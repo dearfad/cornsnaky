@@ -129,7 +129,7 @@ export const useStateStore = defineStore(
         puzzles.value[puzzleCurrentId.value - 1].content = data[0].content
         puzzles.value[puzzleCurrentId.value - 1].images = data[0].images
         puzzles.value[puzzleCurrentId.value - 1].file = data[0].file
-        puzzles.value[puzzleCurrentId.value - 1].audio = data[0].audio
+        puzzles.value[puzzleCurrentId.value - 1].audios = data[0].audios
         puzzles.value[puzzleCurrentId.value - 1].tips = data[0].tips.map(
           (item, n) => {
             if (groupOpenTips.value[puzzleCurrentId.value - 1][n] === 1) {
