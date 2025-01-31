@@ -29,6 +29,16 @@
       <PuzzleAudio />
       <PuzzleTips />
 
+      <v-sheet>
+        <v-btn
+          text="购买答题次数（2000点）"
+          block
+          class="my-4 font-weight-bold"
+          size="large"
+          @click="buyAnswerCount"
+        />
+      </v-sheet>
+
       <v-sheet class="py-4">
         <v-text-field
           v-model="puzzleAnswer"
@@ -74,6 +84,19 @@ async function getPuzzleContent() {
 }
 
 async function sendPuzzleAnswer() {
-  await stateStore.checkPuzzleAnswer(puzzleAnswer.value)
+  if (stateStore.groupAnswerCount[stateStore.puzzleCurrentId - 1] >= 1) {
+    stateStore.groupAnswerCount[stateStore.puzzleCurrentId - 1] -= 1
+    await stateStore.checkPuzzleAnswer(puzzleAnswer.value)
+  } else {
+    stateStore.appInfo("答题次数已经耗尽，请购买次数或者放弃！")
+  }
+}
+
+async function buyAnswerCount() {
+  if (stateStore.groupCurrentPoints >= 2000) {
+    await stateStore.buyAnswerCount()
+  } else {
+    stateStore.appInfo("点数不足，请充值！")
+  }
 }
 </script>

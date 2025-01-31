@@ -6,8 +6,9 @@
     <v-app-bar-title
       class="font-weight-bold cursor-pointer"
       @click="router.push('/')"
-      >Cornsnaky</v-app-bar-title
     >
+      Cornsnaky
+    </v-app-bar-title>
   </v-app-bar>
 </template>
 

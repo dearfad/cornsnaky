@@ -7,7 +7,7 @@
   </v-snackbar>
 </template>
 
-<script setup lang="ts">
+<script setup>
 const snackbar = ref(false)
 const timeout = ref(2000)
 const stateStore = useStateStore()

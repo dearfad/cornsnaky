@@ -3,7 +3,7 @@
     <v-navigation-drawer
       v-model="stateStore.isNavDrawerShow"
       class="pa-4"
-      :disable-resize-watcher="true"
+      :disable-resize-watcher="false"
     >
       <v-list nav>
         <v-list-item

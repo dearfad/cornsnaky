@@ -133,7 +133,6 @@ export const useStateStore = defineStore(
       if (error) {
         appInfo.value = error
       } else {
-        groupAnswerCount.value[puzzleCurrentId.value - 1] += 1
         await updateGroupCount()
         if (answer === data[0].answer) {
           if (groupCompleted.value[puzzleCurrentId.value - 1] === 0) {
@@ -212,6 +211,24 @@ export const useStateStore = defineStore(
       }
     }
 
+    async function buyAnswerCount() {
+      groupUsedPoints.value += 2000
+      groupAnswerCount.value[puzzleCurrentId.value - 1] += 1
+      const { error } = await supabase
+        .from("groups")
+        .update({
+          usedpoints: groupUsedPoints.value,
+          count: groupAnswerCount.value,
+        })
+        .eq("name", groupName.value)
+        .select()
+      if (error) {
+        appInfo.value = error
+      } else {
+        appInfo.value = "购买答题次数成功"
+      }
+    }
+
     return {
       isNavDrawerShow,
       appInfo,
@@ -248,6 +265,7 @@ export const useStateStore = defineStore(
 
       groupOpenTips,
       buyTip,
+      buyAnswerCount,
     }
   },
   { persist: true }

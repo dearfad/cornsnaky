@@ -25,6 +25,7 @@
                 size="large"
                 variant="flat"
                 to="/puzzle"
+                :disabled="!(stateStore.userGroup && stateStore.userName)"
               />
             </v-sheet>
             <v-sheet :elevation="1" class="pa-4 ma-2">

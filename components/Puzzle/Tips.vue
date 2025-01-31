@@ -20,6 +20,10 @@
 const stateStore = useStateStore()
 
 async function buyTip(n, price) {
-  await stateStore.buyTip(n, price)
+  if (stateStore.groupCurrentPoints >= price) {
+    await stateStore.buyTip(n, price)
+  } else {
+    stateStore.appInfo = "当前点数不足，无法购买！"
+  }
 }
 </script>
