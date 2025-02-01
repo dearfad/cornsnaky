@@ -32,6 +32,9 @@
                 <li>
                   每个题目下均会有若干提示，队伍可以按照需求花费提示点数购买提示。提示点数从本队伍开始比赛起增长，每分钟增长5点，请谨慎分配提示点数。每个题目限制回答20次，队伍也可以花费提示点数购买答题次数。
                 </li>
+                <li>
+                  小队排名规则：按照主线进度、支线进度、主线进度完成时间进行排名。
+                </li>
               </ul>
             </v-card-text>
           </v-card>
@@ -53,77 +56,9 @@
               </ul>
             </v-card-text>
           </v-card>
-
-          <v-card class="my-4">
-            <v-card-title class="font-weight-bold"
-              >2、注册用户、更改昵称、加入组</v-card-title
-            >
-            <v-card-text>
-              <ul class="px-4 text-body-1">
-                <li>输入常用邮箱和密码注册用户</li>
-                <li>在用户页面起一个自己喜欢的昵称</li>
-                <li>通过获取的邀请码加入组，如何没有合适的组可以自己创建</li>
-              </ul>
-            </v-card-text>
-          </v-card>
-
-          <v-card class="my-4">
-            <v-card-title class="font-weight-bold">解答谜题</v-card-title>
-            <v-card-text>
-              <ul class="px-4 text-body-1">
-                <li>注册或者登录后进入谜题页面解答问题，答对将增加小队积分</li>
-              </ul>
-            </v-card-text>
-          </v-card>
-          <v-card class="my-4">
-            <v-card-title class="font-weight-bold">小组排名</v-card-title>
-            <v-card-text>
-              <ul class="px-4 text-body-1">
-                <li>通过积分进行排名</li>
-              </ul>
-            </v-card-text>
-          </v-card>
-          <v-card class="my-4">
-            <v-card-title class="font-weight-bold">答题规则</v-card-title>
-            <v-card-text>
-              <ul class="px-4 text-body-1">
-                <li>组队后由队长点击开始答题并计时，否则无法答题</li>
-                <li>主线任务共8题，支线任务共4题，每题1分</li>
-                <li>主线任务完成分数为 a ，支线任务完成分数为 b</li>
-                <li>
-                  初始显示主线任务2题，主线任务显示题数为 min(8, 2+a+b)
-                  ，支线任务显示题数为 a
-                </li>
-                <li>小组内任意队员答题，无论对错即扣除1次答题次数</li>
-                <li>小组内任意队员答对题目，即增加得分，后续队员答对不得分</li>
-                <li>每道题队伍限答20次，超过次数后无法继续答该题</li>
-              </ul>
-            </v-card-text>
-          </v-card>
-          <v-card class="my-4">
-            <v-card-title class="font-weight-bold">提示规则</v-card-title>
-            <v-card-text>
-              <ul class="px-4 text-body-1">
-                <li>对长点击开始答题后，点数每分钟增加5点</li>
-                <li>可以通过点数购买题目次数，每次2000点</li>
-                <li>可以通过点数购买题目提示，提示点数需求不同</li>
-              </ul>
-            </v-card-text>
-          </v-card>
-          <v-card class="my-4">
-            <v-card-title class="font-weight-bold">排名规则</v-card-title>
-            <v-card-text>
-              <ol class="px-4 text-body-1">
-                <li>主线分数</li>
-                <li>支线分数</li>
-              </ol>
-            </v-card-text>
-          </v-card>
         </v-sheet>
       </v-col>
       <v-col />
     </v-row>
   </v-container>
 </template>
-
-<script setup></script>

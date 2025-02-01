@@ -38,8 +38,9 @@ const isLoading = ref(false)
 const headers = ref([
   { title: "排名", key: "rank" },
   { title: "组名", key: "name" },
-  { title: "积分", key: "mainscore" },
-  { title: "小分", key: "sidescore" },
+  { title: "主线进度", key: "mainscore" },
+  { title: "支线进度", key: "sidescore" },
+  { title: "完成时间", key: "scoretime" },
 ])
 const selected = ref()
 
@@ -49,6 +50,8 @@ async function loadGroup() {
     .from("groups")
     .select("*")
     .order("mainscore", { ascending: false })
+    .order("sidescore", { ascending: false })
+    .order("scoretime", { ascending: true })
   if (error) {
     snackBarText.value = error
     snackBar.value = true
