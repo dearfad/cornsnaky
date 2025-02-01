@@ -38,7 +38,12 @@
         text="请通知所有队员后点击开始答题！"
         class="my-4"
       />
-      <v-btn block size="x-large" class="my-2" @click="startPuzzle"
+      <v-btn
+        block
+        size="x-large"
+        class="my-2"
+        :disabled="true"
+        @click="startPuzzle"
         ><span class="font-weight-bold">开始答题</span></v-btn
       >
     </v-sheet>
