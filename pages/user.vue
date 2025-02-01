@@ -157,7 +157,11 @@ const changeName = async () => {
     })
     .eq("id", user.value.id)
   if (error) {
-    stateStore.appInfo = error
+    if (error.code === "23505") {
+      stateStore.appInfo = "昵称已存在"
+    } else {
+      stateStore.appInfo = error
+    }
   } else {
     stateStore.userName = nickname.value
     stateStore.appInfo = "更改昵称成功"
