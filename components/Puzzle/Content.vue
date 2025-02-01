@@ -42,7 +42,10 @@
       <v-sheet class="py-4">
         <v-text-field
           v-model="puzzleAnswer"
-          label="请输入答案"
+          :label="
+            '剩余答题次数：' +
+            stateStore.groupAnswerCount[stateStore.puzzleCurrentId - 1]
+          "
           variant="outlined"
         />
         <v-btn

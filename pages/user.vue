@@ -42,6 +42,27 @@
               />
               <p class="font-weight-bold">更改昵称及入组后可以开始答题</p>
             </v-sheet>
+
+            <v-sheet :elevation="1" class="pa-4 ma-2">
+              <span class="font-weight-bold">{{ stateStore.userGroup }}</span>
+              小队成员
+              <v-list>
+                <v-list-item
+                  v-for="member in stateStore.groupMembers"
+                  :key="member"
+                  :title="member"
+                />
+              </v-list>
+              <v-btn
+                block
+                size="large"
+                variant="flat"
+                text="刷新小队成员"
+                :isloading="isGroupMembersLoading"
+                @click="refreshGroupMembers"
+              />
+            </v-sheet>
+
             <v-sheet :elevation="1" class="pa-4 ma-2">
               <v-text-field
                 v-model="nickname"
@@ -56,41 +77,44 @@
                 @click="changeName"
               />
             </v-sheet>
-            <v-sheet :elevation="1" class="pa-4 ma-2">
+            <v-sheet
+              v-if="stateStore.userGroup ? false : true"
+              :elevation="1"
+              class="pa-4 ma-2"
+            >
               <v-text-field
                 v-model="groupcode"
                 label="输入小队密钥"
                 variant="outlined"
-                :disabled="stateStore.userGroup ? true : false"
               />
               <v-btn
                 block
                 size="large"
                 variant="flat"
                 text="加入组"
-                :disabled="stateStore.userGroup ? true : false"
                 @click="joinGroup"
               />
             </v-sheet>
-            <v-sheet :elevation="1" class="pa-4 ma-2">
+            <v-sheet
+              v-if="stateStore.userGroup ? false : true"
+              :elevation="1"
+              class="pa-4 ma-2"
+            >
               <v-text-field
                 v-model="groupname"
                 label="组名"
                 variant="outlined"
-                :disabled="stateStore.userGroup ? true : false"
               />
               <v-text-field
                 v-model="groupcode"
                 label="小队密钥"
                 variant="outlined"
-                :disabled="stateStore.userGroup ? true : false"
               />
               <v-btn
                 block
                 size="large"
                 variant="flat"
                 text="创建并加入组"
-                :disabled="stateStore.userGroup ? true : false"
                 @click="createGroup"
               />
             </v-sheet>
@@ -113,6 +137,7 @@ const nickname = ref("")
 const groupname = ref("")
 const groupcode = ref("")
 const stateStore = useStateStore()
+const isGroupMembersLoading = ref(false)
 
 const signOut = async () => {
   const { error } = await supabase.auth.signOut()
@@ -192,5 +217,11 @@ async function joinGroup() {
       stateStore.appInfo = "加入组成功"
     }
   }
+}
+
+async function refreshGroupMembers() {
+  isGroupMembersLoading.value = true
+  await stateStore.getGroupMembers()
+  isGroupMembersLoading.value = false
 }
 </script>

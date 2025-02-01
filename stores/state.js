@@ -26,11 +26,16 @@ export const useStateStore = defineStore(
     const groupAnswerCount = ref([])
     const groupCompleted = ref([])
     const groupOpenTips = ref([])
+    const groupMembers = ref([])
     const groupCurrentPoints = computed(() => {
-      return Math.floor(
-        ((new Date() - new Date(groupStartTime.value)) / (1000 * 60)) * 5 -
-          groupUsedPoints.value
-      )
+      if (groupStartTime.value) {
+        return Math.floor(
+          ((new Date() - new Date(groupStartTime.value)) / (1000 * 60)) * 5 -
+            groupUsedPoints.value
+        )
+      } else {
+        return 0
+      }
     })
     const groupIsSolving = computed(() => (groupStartTime.value ? true : false))
 
@@ -62,6 +67,7 @@ export const useStateStore = defineStore(
       groupAnswerCount.value = []
       groupCompleted.value = []
       groupOpenTips.value = []
+      groupMembers.value = []
       puzzles.value = []
       puzzleTips.value = []
       puzzleMain.value = []
@@ -253,6 +259,20 @@ export const useStateStore = defineStore(
       }
     }
 
+    async function getGroupMembers() {
+      const { data, error } = await supabase
+        .from("users")
+        .select("name, group")
+        .eq("group", userGroup.value)
+      if (error) {
+        appInfo.value = error
+      } else {
+        groupMembers.value = data.map((item) => {
+          return item.name
+        })
+      }
+    }
+
     return {
       isNavDrawerShow,
       appInfo,
@@ -278,6 +298,7 @@ export const useStateStore = defineStore(
       groupCurrentPoints,
       groupAnswerCount,
       groupCompleted,
+      groupMembers,
       newGroup,
 
       puzzles,
@@ -291,6 +312,8 @@ export const useStateStore = defineStore(
       groupOpenTips,
       buyTip,
       buyAnswerCount,
+
+      getGroupMembers,
     }
   },
   { persist: true }
