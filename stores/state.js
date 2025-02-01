@@ -168,12 +168,14 @@ export const useStateStore = defineStore(
               puzzleCurrentId.value <= 8
                 ? { mainscore: groupMainScore.value + 1 }
                 : { sidescore: groupSideScore.value + 1 }
+            const mainScoreTime =
+              puzzleCurrentId.value <= 8 ? new Date() : groupScoreTime.value
             const { error: grouperror } = await supabase
               .from("groups")
               .update({
                 ...score,
                 ...{ completed: groupCompleted.value },
-                ...{ scoretime: new Date() },
+                ...{ scoretime: mainScoreTime },
               })
               .eq("name", groupName.value)
               .select()
