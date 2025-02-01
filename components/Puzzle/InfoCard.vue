@@ -23,9 +23,11 @@
       size="default"
       variant="outlined"
       class="mt-4"
+      :loading="isRefreshing"
       @click="refreshGroupInfo"
-      >刷新小队信息</v-btn
     >
+      刷新小队信息
+    </v-btn>
     <v-sheet v-if="stateStore.userIsLeader && !stateStore.groupIsSolving">
       <v-alert
         density="compact"
@@ -46,6 +48,7 @@
 <script setup>
 const stateStore = useStateStore()
 const supabase = useSupabaseClient()
+const isRefreshing = ref(false)
 
 onMounted(async () => {
   if (!stateStore.groupName) {
@@ -54,7 +57,9 @@ onMounted(async () => {
 })
 
 async function refreshGroupInfo() {
+  isRefreshing.value = true
   await stateStore.getGroupInfo()
+  isRefreshing.value = false
 }
 
 async function startPuzzle() {

@@ -3,8 +3,10 @@ export const useStateStore = defineStore(
   () => {
     // NavDrawer
     const isNavDrawerShow = ref(false)
+
     // AppInfo
     const appInfo = ref("")
+
     // User
     const userId = ref("")
     const userEmail = ref("")
@@ -12,6 +14,7 @@ export const useStateStore = defineStore(
     const userName = ref("")
     const userIsLeader = ref(false)
 
+    // Group
     const groupName = ref("")
     const groupLeader = ref("")
     const groupMainScore = ref(0)
@@ -100,7 +103,7 @@ export const useStateStore = defineStore(
         groupCompleted.value = data[0].completed
         groupOpenTips.value = data[0].opentips
         await getPuzzleInfo()
-        appInfo.value = "刷新成功"
+        // appInfo.value = "刷新成功"
       }
     }
 
@@ -224,6 +227,7 @@ export const useStateStore = defineStore(
       if (error) {
         appInfo.value = error
       } else {
+        await getGroupInfo()
         // appInfo.value = "刷新成功"
       }
     }
