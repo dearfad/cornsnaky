@@ -28,6 +28,20 @@
                 :disabled="!(stateStore.userGroup && stateStore.userName)"
               />
             </v-sheet>
+            <v-sheet
+              v-if="!stateStore.userGroup || !stateStore.userName"
+              class="ma-2 pa-4 text-center"
+              elevation="2"
+              color="grey-lighten-3"
+            >
+              <v-icon
+                class="mb-4"
+                color="red"
+                icon="mdi-alert-outline"
+                size="40"
+              />
+              <p class="font-weight-bold">更改昵称及入组后可以开始答题</p>
+            </v-sheet>
             <v-sheet :elevation="1" class="pa-4 ma-2">
               <v-text-field
                 v-model="nickname"

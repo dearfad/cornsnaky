@@ -82,7 +82,7 @@ const signUpNewUser = async () => {
     password: password.value,
   })
   if (errorSignUp) {
-    stateStore.appInfo = error
+    stateStore.appInfo = errorSignUp
     isRegistering.value = false
   } else {
     const { error: errorInsert } = await supabase
