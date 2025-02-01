@@ -59,7 +59,7 @@
             <v-sheet :elevation="1" class="pa-4 ma-2">
               <v-text-field
                 v-model="groupcode"
-                label="输入邀请码"
+                label="输入小队密钥"
                 variant="outlined"
                 :disabled="stateStore.userGroup ? true : false"
               />
@@ -81,7 +81,7 @@
               />
               <v-text-field
                 v-model="groupcode"
-                label="邀请码"
+                label="小队密钥"
                 variant="outlined"
                 :disabled="stateStore.userGroup ? true : false"
               />
@@ -109,8 +109,6 @@ definePageMeta({
 const user = useSupabaseUser()
 const supabase = useSupabaseClient()
 const router = useRouter()
-const snackBar = ref(false)
-const snackBarText = ref("")
 const nickname = ref("")
 const groupname = ref("")
 const groupcode = ref("")
@@ -143,14 +141,20 @@ const changeName = async () => {
 
 async function createGroup() {
   stateStore.newGroup()
-  const { error } = await supabase.from("groups").insert({
-    name: groupname.value,
-    code: groupcode.value,
-    leader: stateStore.userId,
-  })
+  const { error } = await supabase
+    .from("groups")
+    .insert({
+      name: groupname.value,
+      code: groupcode.value,
+      leader: stateStore.userId,
+    })
+    .select()
   if (error) {
-    snackBarText.value = error
-    snackBar.value = true
+    if (error.code === "23505") {
+      stateStore.appInfo = "组名或小队密钥已存在"
+    } else {
+      stateStore.appInfo = error
+    }
   } else {
     stateStore.appInfo = "创建组成功"
     const { error: error2 } = await supabase
@@ -175,7 +179,7 @@ async function joinGroup() {
   if (errorSelect) {
     stateStore.appInfo = errorSelect
   } else if (data.length === 0) {
-    stateStore.appInfo = "邀请码无效"
+    stateStore.appInfo = "小队密钥无效"
   } else {
     const { error: errorUpdate } = await supabase
       .from("users")
