@@ -9,6 +9,10 @@
             size="large"
             block
             color="success"
+            :loading="
+              stateStore.isPuzzleContentLoading &&
+              stateStore.puzzleCurrentId <= 8
+            "
           >
             主线任务
           </v-btn>
@@ -52,6 +56,10 @@
             size="large"
             block
             color="primary"
+            :loading="
+              stateStore.isPuzzleContentLoading &&
+              stateStore.puzzleCurrentId > 8
+            "
           >
             支线任务
           </v-btn>

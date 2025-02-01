@@ -73,7 +73,9 @@ onBeforeMount(async () => {
 watch(
   () => stateStore.puzzleCurrentId,
   async () => {
+    stateStore.isPuzzleContentLoading = true
     await getPuzzleContent()
+    stateStore.isPuzzleContentLoading = false
   }
 )
 

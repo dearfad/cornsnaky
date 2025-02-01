@@ -6,7 +6,8 @@ export const useStateStore = defineStore(
 
     // AppInfo
     const appInfo = ref("")
-
+    // PuzzleContentLoading
+    const isPuzzleContentLoading = ref(false)
     // User
     const userId = ref("")
     const userEmail = ref("")
@@ -253,6 +254,7 @@ export const useStateStore = defineStore(
     return {
       isNavDrawerShow,
       appInfo,
+      isPuzzleContentLoading,
 
       userId,
       userEmail,
