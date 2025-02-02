@@ -31,6 +31,7 @@
 </template>
 
 <script setup>
+const stateStore = useStateStore()
 const supabase = useSupabaseClient()
 const snackBar = ref(false)
 const snackBarText = ref("")
@@ -42,6 +43,7 @@ const headers = ref([
   { title: "主线进度", key: "mainscore" },
   { title: "支线进度", key: "sidescore" },
   { title: "完成时间", key: "scoretime" },
+  { title: "成员", key: "members" },
 ])
 const selected = ref()
 
@@ -56,11 +58,29 @@ async function loadGroup() {
   if (error) {
     snackBarText.value = error
     snackBar.value = true
+  } else {
+    data.forEach((item, index) => {
+      item.rank = index + 1
+    })
+    items.value = data
+    const { data: members, error: memberError } = await supabase
+      .from("users")
+      .select("name, group")
+    if (memberError) {
+      stateStore.appInfo = memberError
+    } else {
+      const groupMap = new Map(items.value.map((item) => [item.name, item]))
+      members.forEach((member) => {
+        const group = groupMap.get(member.group)
+        if (group) {
+          if (!group.members) {
+            group.members = ""
+          }
+          group.members += member.name + " "
+        }
+      })
+    }
   }
-  data.forEach((item, index) => {
-    item.rank = index + 1
-  })
-  items.value = data
   isLoading.value = false
 }
 </script>
