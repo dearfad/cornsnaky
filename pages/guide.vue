@@ -56,6 +56,16 @@
               </ul>
             </v-card-text>
           </v-card>
+          <v-card class="my-4">
+            <v-card-title class="font-weight-bold">4、注意事项</v-card-title>
+            <v-card-text>
+              <ul class="px-4 text-body-1">
+                <li>每人仅可注册一个账号，加入一个队伍。</li>
+                <li>队伍间禁止交流题目信息。</li>
+                <li>一经发现取消参赛资格。</li>
+              </ul>
+            </v-card-text>
+          </v-card>
         </v-sheet>
       </v-col>
       <v-col />
