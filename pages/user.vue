@@ -40,7 +40,7 @@
                 icon="mdi-alert-outline"
                 size="40"
               />
-              <p class="font-weight-bold">更改昵称及入组后可以开始答题</p>
+              <p class="font-weight-bold">更改昵称及入队后可以开始答题</p>
             </v-sheet>
 
             <v-sheet :elevation="1" class="pa-4 ma-2">
@@ -78,6 +78,24 @@
               />
             </v-sheet>
             <v-sheet
+              v-if="stateStore.userGroup ? true : false"
+              :elevation="1"
+              class="pa-4 ma-2"
+            >
+              <v-text-field
+                v-model="newGroupName"
+                label="更改小队名称"
+                variant="outlined"
+              />
+              <v-btn
+                text="更改小队名称"
+                block
+                size="large"
+                variant="flat"
+                @click="changeGroupName"
+              />
+            </v-sheet>
+            <v-sheet
               v-if="stateStore.userGroup ? false : true"
               :elevation="1"
               class="pa-4 ma-2"
@@ -91,7 +109,7 @@
                 block
                 size="large"
                 variant="flat"
-                text="加入组"
+                text="加入小队"
                 @click="joinGroup"
               />
             </v-sheet>
@@ -102,7 +120,7 @@
             >
               <v-text-field
                 v-model="groupname"
-                label="组名"
+                label="队名"
                 variant="outlined"
               />
               <v-text-field
@@ -114,7 +132,7 @@
                 block
                 size="large"
                 variant="flat"
-                text="创建并加入组"
+                text="创建并加入小队"
                 @click="createGroup"
               />
             </v-sheet>
@@ -138,6 +156,7 @@ const groupname = ref("")
 const groupcode = ref("")
 const stateStore = useStateStore()
 const isGroupMembersLoading = ref(false)
+const newGroupName = ref("")
 
 const signOut = async () => {
   const { error } = await supabase.auth.signOut()
@@ -227,5 +246,18 @@ async function refreshGroupMembers() {
   isGroupMembersLoading.value = true
   await stateStore.getGroupMembers()
   isGroupMembersLoading.value = false
+}
+
+async function changeGroupName() {
+  const { error } = await supabase
+    .from("groups")
+    .update({ name: newGroupName.value })
+    .eq("leader", user.value.id)
+  if (error) {
+    stateStore.appInfo = error
+  } else {
+    stateStore.userGroup = newGroupName.value
+    stateStore.appInfo = "更改组名成功"
+  }
 }
 </script>
