@@ -254,7 +254,11 @@ async function changeGroupName() {
     .update({ name: newGroupName.value })
     .eq("leader", user.value.id)
   if (error) {
-    stateStore.appInfo = error
+    if (error.code === "23505") {
+      stateStore.appInfo = "小队名已存在"
+    } else {
+      stateStore.appInfo = error
+    }
   } else {
     const { errorUpdateMembers } = await supabase
       .from("users")
