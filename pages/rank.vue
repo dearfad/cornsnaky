@@ -1,18 +1,19 @@
 <template>
   <v-container>
     <v-row class="justify-center">
-      <v-col cols="12" md="6">
+      <v-col cols="12" md="10">
         <v-data-table
           v-model="selected"
           :headers="headers"
           :items="items"
+          items-per-page="100"
           items-per-page-text="每页显示数量"
           hide-no-data
         />
       </v-col>
     </v-row>
     <v-row class="justify-center">
-      <v-col cols="6">
+      <v-col cols="12" md="10">
         <v-btn
           block
           size="x-large"
@@ -63,5 +64,3 @@ async function loadGroup() {
   isLoading.value = false
 }
 </script>
-
-<style></style>
