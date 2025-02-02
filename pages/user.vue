@@ -256,8 +256,16 @@ async function changeGroupName() {
   if (error) {
     stateStore.appInfo = error
   } else {
-    stateStore.userGroup = newGroupName.value
-    stateStore.appInfo = "更改组名成功"
+    const { errorUpdateMembers } = await supabase
+      .from("users")
+      .update({ group: newGroupName.value })
+      .eq("group", stateStore.userGroup)
+    if (errorUpdateMembers) {
+      stateStore.appInfo = errorUpdateMembers
+    } else {
+      stateStore.userGroup = newGroupName.value
+      stateStore.appInfo = "更改组名成功"
+    }
   }
 }
 </script>
