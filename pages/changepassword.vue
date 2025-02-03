@@ -34,6 +34,6 @@ async function changePassword() {
   } else {
     stateStore.appInfo = "密码更新成功"
   }
-  isLoading.value = true
+  isLoading.value = false
 }
 </script>
