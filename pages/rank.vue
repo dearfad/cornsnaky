@@ -1,19 +1,19 @@
 <template>
   <v-container>
     <v-row class="justify-center">
-      <v-col cols="12" md="10">
+      <v-col cols="12">
         <v-data-table
           v-model="selected"
           :headers="headers"
           :items="items"
-          items-per-page="100"
+          items-per-page="-1"
           items-per-page-text="每页显示数量"
           hide-no-data
         />
       </v-col>
     </v-row>
     <v-row class="justify-center">
-      <v-col cols="12" md="10">
+      <v-col cols="12">
         <v-btn
           block
           size="x-large"
@@ -43,6 +43,7 @@ const headers = ref([
   { title: "主线进度", key: "mainscore" },
   { title: "支线进度", key: "sidescore" },
   { title: "完成时间", key: "scoretime" },
+  { title: "队长", key: "leader" },
   { title: "成员", key: "members" },
 ])
 const selected = ref()
@@ -65,7 +66,7 @@ async function loadGroup() {
     items.value = data
     const { data: members, error: memberError } = await supabase
       .from("users")
-      .select("name, group")
+      .select("name, group, isleader")
     if (memberError) {
       stateStore.appInfo = memberError
     } else {
@@ -77,6 +78,9 @@ async function loadGroup() {
             group.members = ""
           }
           group.members += member.name + " "
+          if (member.isleader) {
+            group.leader = member.name ? member.name : "null"
+          }
         }
       })
     }
