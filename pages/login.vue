@@ -51,13 +51,7 @@
       </v-row>
       <v-row>
         <v-col cols="12" md="3" class="mx-auto">
-          <v-btn
-            size="large"
-            block
-            :disabled="stateStore.userId ? false : true"
-            @click="signOut"
-            >退出</v-btn
-          >
+          <v-btn size="large" block @click="signOut">退出</v-btn>
         </v-col>
       </v-row>
       <v-row>

@@ -77,6 +77,7 @@
                 block
                 size="large"
                 variant="flat"
+                :loading="isNameChanging"
                 @click="changeName"
               />
             </v-sheet>
@@ -98,6 +99,7 @@
                 block
                 size="large"
                 variant="flat"
+                :loading="isGroupNameChanging"
                 @click="changeGroupName"
               />
             </v-sheet>
@@ -171,7 +173,9 @@ const groupname = ref("")
 const groupcode = ref("")
 const stateStore = useStateStore()
 const isGroupMembersLoading = ref(false)
+const isNameChanging = ref(false)
 const newGroupName = ref("")
+const isGroupNameChanging = ref(false)
 
 const signOut = async () => {
   const { error } = await supabase.auth.signOut()
@@ -183,7 +187,8 @@ const signOut = async () => {
   }
 }
 
-const changeName = async () => {
+async function changeName() {
+  isNameChanging.value = true
   const { error } = await supabase
     .from("users")
     .update({
@@ -200,9 +205,14 @@ const changeName = async () => {
     stateStore.userName = nickname.value
     stateStore.appInfo = "更改昵称成功"
   }
+  isNameChanging.value = false
 }
 
 async function createGroup() {
+  if (groupname.value === "" || groupcode.value === "") {
+    stateStore.appInfo = "请填写队名和小队密钥"
+    return
+  }
   const { error } = await supabase
     .from("groups")
     .insert({
@@ -234,6 +244,10 @@ async function createGroup() {
 }
 
 async function joinGroup() {
+  if (groupcode.value === "") {
+    stateStore.appInfo = "请填写小队密钥"
+    return
+  }
   const { data, errorSelect } = await supabase
     .from("groups")
     .select()
@@ -263,6 +277,7 @@ async function refreshGroupMembers() {
 }
 
 async function changeGroupName() {
+  isGroupNameChanging.value = true
   const { data, error } = await supabase
     .from("groups")
     .update({ name: newGroupName.value })
@@ -290,5 +305,6 @@ async function changeGroupName() {
       }
     }
   }
+  isGroupNameChanging.value = false
 }
 </script>
