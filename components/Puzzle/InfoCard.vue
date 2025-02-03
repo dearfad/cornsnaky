@@ -32,9 +32,16 @@
         text="请通知所有队员后点击开始答题！"
         class="my-4"
       />
-      <v-btn v-if="false" block size="x-large" class="my-2" @click="startPuzzle"
-        ><span class="font-weight-bold">开始答题</span></v-btn
+      <v-btn
+        v-if="false"
+        block
+        size="x-large"
+        class="my-2"
+        :loading="isStarting"
+        @click="startPuzzle"
       >
+        <span class="font-weight-bold"> 开始答题 </span>
+      </v-btn>
     </v-sheet>
   </v-sheet>
 </template>
@@ -43,6 +50,8 @@
 const supabase = useSupabaseClient()
 const stateStore = useStateStore()
 const isRefreshing = ref(false)
+const isStarting = ref(false)
+const isCurrentPointsRefreshing = ref(true)
 
 onMounted(async () => {
   if (!stateStore.groupName) {
@@ -57,6 +66,7 @@ async function refreshGroupInfo() {
 }
 
 async function startPuzzle() {
+  isStarting.value = true
   const { error } = await supabase
     .from("groups")
     .update({ starttime: new Date() })
@@ -67,5 +77,6 @@ async function startPuzzle() {
     await stateStore.getGroupInfo()
     stateStore.appInfo = "小队答题开始"
   }
+  isStarting.value = false
 }
 </script>

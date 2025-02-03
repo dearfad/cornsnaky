@@ -27,16 +27,8 @@ export const useStateStore = defineStore(
     const groupCompleted = ref([])
     const groupOpenTips = ref([])
     const groupMembers = ref([])
-    const groupCurrentPoints = computed(() => {
-      if (groupStartTime.value) {
-        return Math.floor(
-          ((new Date() - new Date(groupStartTime.value)) / (1000 * 60)) * 5 -
-            groupUsedPoints.value
-        )
-      } else {
-        return 0
-      }
-    })
+    const groupCurrentPoints = ref(0)
+
     const groupIsSolving = computed(() => (groupStartTime.value ? true : false))
 
     const puzzles = ref([])
@@ -109,8 +101,20 @@ export const useStateStore = defineStore(
         groupAnswerCount.value = data[0].count
         groupCompleted.value = data[0].completed
         groupOpenTips.value = data[0].opentips
+        groupCurrentPoints.value = getCurrentPoints()
         await getPuzzleInfo()
         // appInfo.value = "刷新成功"
+      }
+    }
+
+    function getCurrentPoints() {
+      if (groupStartTime.value) {
+        return Math.floor(
+          ((new Date() - new Date(groupStartTime.value)) / (1000 * 60)) * 5 -
+            groupUsedPoints.value
+        )
+      } else {
+        return 0
       }
     }
 
