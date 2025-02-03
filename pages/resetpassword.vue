@@ -12,7 +12,7 @@
           block
           size="large"
           variant="outlined"
-          :loading="isSending"
+          :loading="isLoading"
           @click="resetPassword"
         />
       </v-col>
@@ -22,12 +22,12 @@
 
 <script setup>
 const email = ref("")
+const isLoading = ref(false)
 const supabase = useSupabaseClient()
 const stateStore = useStateStore()
-const isSending = ref(false)
 
 async function resetPassword() {
-  isSending.value = true
+  isLoading.value = true
   const { error } = await supabase.auth.resetPasswordForEmail(email.value, {
     redirectTo: "https://cornsnaky.dearfad.com/changepassword",
   })
@@ -36,6 +36,6 @@ async function resetPassword() {
   } else {
     stateStore.appInfo = "重置密码链接已发送到您的邮箱"
   }
-  isSending.value = false
+  isLoading.value = false
 }
 </script>
