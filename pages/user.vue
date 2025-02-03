@@ -179,6 +179,7 @@ const signOut = async () => {
     stateStore.appInfo = error
   } else {
     stateStore.newUser()
+    stateStore.newGroup()
     router.push("/")
   }
 }

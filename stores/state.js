@@ -68,6 +68,7 @@ export const useStateStore = defineStore(
       groupCompleted.value = []
       groupOpenTips.value = []
       groupMembers.value = []
+
       puzzles.value = []
       puzzleTips.value = []
       puzzleMain.value = []
