@@ -1,13 +1,13 @@
 export const useStateStore = defineStore(
   "state",
   () => {
-    // NavDrawer
-    const isNavDrawerShow = ref(false)
-
     // AppInfo
     const appInfo = ref("")
+    // NavDrawer
+    const isNavDrawerShow = ref(false)
     // PuzzleContentLoading
     const isPuzzleContentLoading = ref(false)
+
     // User
     const userId = ref("")
     const userEmail = ref("")
@@ -20,8 +20,8 @@ export const useStateStore = defineStore(
     const groupLeader = ref("")
     const groupMainScore = ref(0)
     const groupSideScore = ref(0)
-    const groupScoreTime = ref("")
-    const groupStartTime = ref("")
+    const groupScoreTime = ref(null)
+    const groupStartTime = ref(null)
     const groupUsedPoints = ref(0)
     const groupAnswerCount = ref([])
     const groupCompleted = ref([])
@@ -48,15 +48,14 @@ export const useStateStore = defineStore(
     const supabase = useSupabaseClient()
     const user = useSupabaseUser()
 
-    function newUser() {
+    function $reset() {
+      // user
       userId.value = ""
       userEmail.value = ""
       userGroup.value = ""
       userName.value = ""
       userIsLeader.value = false
-    }
-
-    function newGroup() {
+      // group
       groupName.value = ""
       groupLeader.value = ""
       groupMainScore.value = 0
@@ -68,7 +67,7 @@ export const useStateStore = defineStore(
       groupCompleted.value = []
       groupOpenTips.value = []
       groupMembers.value = []
-
+      // puzzles
       puzzles.value = []
       puzzleTips.value = []
       puzzleMain.value = []
@@ -275,9 +274,10 @@ export const useStateStore = defineStore(
     }
 
     return {
-      isNavDrawerShow,
       appInfo,
+      isNavDrawerShow,
       isPuzzleContentLoading,
+      $reset,
 
       userId,
       userEmail,
@@ -286,7 +286,6 @@ export const useStateStore = defineStore(
       userIsLeader,
       getUserInfo,
       getGroupInfo,
-      newUser,
 
       groupName,
       groupLeader,
@@ -300,7 +299,6 @@ export const useStateStore = defineStore(
       groupAnswerCount,
       groupCompleted,
       groupMembers,
-      newGroup,
 
       puzzles,
       puzzleTips,

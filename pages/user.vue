@@ -178,8 +178,7 @@ const signOut = async () => {
   if (error) {
     stateStore.appInfo = error
   } else {
-    stateStore.newUser()
-    stateStore.newGroup()
+    stateStore.$reset()
     router.push("/")
   }
 }
@@ -204,7 +203,6 @@ const changeName = async () => {
 }
 
 async function createGroup() {
-  stateStore.newGroup()
   const { error } = await supabase
     .from("groups")
     .insert({

@@ -113,7 +113,7 @@ const signOut = async () => {
   if (error) {
     stateStore.appInfo = error
   } else {
-    stateStore.newUser()
+    stateStore.$reset()
     stateStore.appInfo = "退出成功"
   }
 }

@@ -69,14 +69,14 @@ const signOut = async () => {
   if (error) {
     stateStore.appInfo = error
   } else {
-    stateStore.newUser()
+    stateStore.$reset()
     stateStore.appInfo = "退出成功"
   }
 }
 
 const signUpNewUser = async () => {
   isRegistering.value = true
-  stateStore.newUser()
+  stateStore.$reset()
   const { data, error: errorSignUp } = await supabase.auth.signUp({
     email: email.value,
     password: password.value,
