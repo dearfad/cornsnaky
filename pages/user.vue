@@ -68,6 +68,9 @@
                 v-model="nickname"
                 label="昵称"
                 variant="outlined"
+                maxlength="50"
+                :counter="50"
+                :rules="[(v) => v.length <= 50 || '最多只能输入50个字符']"
               />
               <v-btn
                 text="更改昵称"
@@ -86,6 +89,9 @@
                 v-model="newGroupName"
                 label="更改小队名称"
                 variant="outlined"
+                maxlength="50"
+                :counter="50"
+                :rules="[(v) => v.length <= 50 || '最多只能输入50个字符']"
               />
               <v-btn
                 text="更改小队名称"
@@ -104,6 +110,9 @@
                 v-model="groupcode"
                 label="输入小队密钥"
                 variant="outlined"
+                maxlength="10"
+                :counter="10"
+                :rules="[(v) => v.length <= 10 || '最多只能输入10个字符']"
               />
               <v-btn
                 block
@@ -122,11 +131,17 @@
                 v-model="groupname"
                 label="队名"
                 variant="outlined"
+                maxlength="50"
+                :counter="50"
+                :rules="[(v) => v.length <= 50 || '最多只能输入50个字符']"
               />
               <v-text-field
                 v-model="groupcode"
                 label="小队密钥"
                 variant="outlined"
+                maxlength="10"
+                :counter="10"
+                :rules="[(v) => v.length <= 10 || '最多只能输入10个字符']"
               />
               <v-btn
                 block

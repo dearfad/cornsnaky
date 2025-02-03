@@ -47,6 +47,9 @@
             stateStore.groupAnswerCount[stateStore.puzzleCurrentId - 1]
           "
           variant="outlined"
+          maxlength="50"
+          :counter="50"
+          :rules="[(v) => v.length <= 50 || '最多只能输入50个字符']"
         />
         <v-btn
           text="提交答案"
