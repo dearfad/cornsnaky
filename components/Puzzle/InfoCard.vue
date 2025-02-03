@@ -40,8 +40,8 @@
 </template>
 
 <script setup>
-const stateStore = useStateStore()
 const supabase = useSupabaseClient()
+const stateStore = useStateStore()
 const isRefreshing = ref(false)
 
 onMounted(async () => {

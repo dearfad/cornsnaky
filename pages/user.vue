@@ -121,6 +121,7 @@
                 size="large"
                 variant="flat"
                 text="加入小队"
+                :loading="isGroupJoining"
                 @click="joinGroup"
               />
             </v-sheet>
@@ -167,17 +168,18 @@ definePageMeta({
 })
 const user = useSupabaseUser()
 const supabase = useSupabaseClient()
+const stateStore = useStateStore()
 const router = useRouter()
 const nickname = ref("")
 const groupname = ref("")
 const groupcode = ref("")
-const stateStore = useStateStore()
+const newGroupName = ref("")
 const isGroupMembersLoading = ref(false)
 const isNameChanging = ref(false)
-const newGroupName = ref("")
 const isGroupNameChanging = ref(false)
+const isGroupJoining = ref(false)
 
-const signOut = async () => {
+async function signOut() {
   const { error } = await supabase.auth.signOut()
   if (error) {
     stateStore.appInfo = error
@@ -206,6 +208,38 @@ async function changeName() {
     stateStore.appInfo = "更改昵称成功"
   }
   isNameChanging.value = false
+}
+
+async function changeGroupName() {
+  isGroupNameChanging.value = true
+  const { data, error } = await supabase
+    .from("groups")
+    .update({ name: newGroupName.value })
+    .eq("leader", user.value.id)
+    .select()
+  if (error) {
+    if (error.code === "23505") {
+      stateStore.appInfo = "小队名已存在"
+    } else {
+      stateStore.appInfo = error
+    }
+  } else {
+    if (data.length === 0) {
+      stateStore.appInfo = "队员不可更改小队名！"
+    } else {
+      const { errorUpdateMembers } = await supabase
+        .from("users")
+        .update({ group: newGroupName.value })
+        .eq("group", stateStore.userGroup)
+      if (errorUpdateMembers) {
+        stateStore.appInfo = errorUpdateMembers
+      } else {
+        stateStore.userGroup = newGroupName.value
+        stateStore.appInfo = "更改组名成功"
+      }
+    }
+  }
+  isGroupNameChanging.value = false
 }
 
 async function createGroup() {
@@ -244,6 +278,7 @@ async function createGroup() {
 }
 
 async function joinGroup() {
+  isGroupJoining.value = true
   if (groupcode.value === "") {
     stateStore.appInfo = "请填写小队密钥"
     return
@@ -268,43 +303,12 @@ async function joinGroup() {
       stateStore.appInfo = "加入组成功"
     }
   }
+  isGroupJoining.value = false
 }
 
 async function refreshGroupMembers() {
   isGroupMembersLoading.value = true
   await stateStore.getGroupMembers()
   isGroupMembersLoading.value = false
-}
-
-async function changeGroupName() {
-  isGroupNameChanging.value = true
-  const { data, error } = await supabase
-    .from("groups")
-    .update({ name: newGroupName.value })
-    .eq("leader", user.value.id)
-    .select()
-  if (error) {
-    if (error.code === "23505") {
-      stateStore.appInfo = "小队名已存在"
-    } else {
-      stateStore.appInfo = error
-    }
-  } else {
-    if (data.length === 0) {
-      stateStore.appInfo = "队员不可更改小队名！"
-    } else {
-      const { errorUpdateMembers } = await supabase
-        .from("users")
-        .update({ group: newGroupName.value })
-        .eq("group", stateStore.userGroup)
-      if (errorUpdateMembers) {
-        stateStore.appInfo = errorUpdateMembers
-      } else {
-        stateStore.userGroup = newGroupName.value
-        stateStore.appInfo = "更改组名成功"
-      }
-    }
-  }
-  isGroupNameChanging.value = false
 }
 </script>
