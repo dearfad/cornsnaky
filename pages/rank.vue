@@ -38,13 +38,13 @@ const snackBarText = ref("")
 const items = ref([])
 const isLoading = ref(false)
 const headers = ref([
-  { title: "排名", key: "rank" },
-  { title: "组名", key: "name" },
-  { title: "主线进度", key: "mainscore" },
-  { title: "支线进度", key: "sidescore" },
-  { title: "完成时间", key: "scoretime" },
-  { title: "队长", key: "leader" },
-  { title: "成员", key: "members" },
+  { title: "排名", key: "rank", width: "80px" },
+  { title: "组名", key: "name", width: "200px" },
+  { title: "主线进度", key: "mainscore", width: "100px" },
+  { title: "支线进度", key: "sidescore", width: "100px" },
+  { title: "完成时间", key: "scoretime", width: "150px" },
+  { title: "队长", key: "leader", width: "80px" },
+  { title: "成员", key: "members", width: "200px" },
 ])
 const selected = ref()
 
@@ -62,6 +62,9 @@ async function loadGroup() {
   } else {
     data.forEach((item, index) => {
       item.rank = index + 1
+      item.scoretime = item.scoretime
+        ? stateStore.getBeijingTime(item.scoretime)
+        : null
     })
     items.value = data
     const { data: members, error: memberError } = await supabase

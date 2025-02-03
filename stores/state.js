@@ -317,6 +317,7 @@ export const useStateStore = defineStore(
       buyAnswerCount,
 
       getGroupMembers,
+      getBeijingTime,
     }
   },
   { persist: true }
