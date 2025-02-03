@@ -249,10 +249,11 @@ async function refreshGroupMembers() {
 }
 
 async function changeGroupName() {
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("groups")
     .update({ name: newGroupName.value })
     .eq("leader", user.value.id)
+    .select()
   if (error) {
     if (error.code === "23505") {
       stateStore.appInfo = "小队名已存在"
@@ -260,15 +261,19 @@ async function changeGroupName() {
       stateStore.appInfo = error
     }
   } else {
-    const { errorUpdateMembers } = await supabase
-      .from("users")
-      .update({ group: newGroupName.value })
-      .eq("group", stateStore.userGroup)
-    if (errorUpdateMembers) {
-      stateStore.appInfo = errorUpdateMembers
+    if (data.length === 0) {
+      stateStore.appInfo = "队员不可更改小队名！"
     } else {
-      stateStore.userGroup = newGroupName.value
-      stateStore.appInfo = "更改组名成功"
+      const { errorUpdateMembers } = await supabase
+        .from("users")
+        .update({ group: newGroupName.value })
+        .eq("group", stateStore.userGroup)
+      if (errorUpdateMembers) {
+        stateStore.appInfo = errorUpdateMembers
+      } else {
+        stateStore.userGroup = newGroupName.value
+        stateStore.appInfo = "更改组名成功"
+      }
     }
   }
 }
