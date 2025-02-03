@@ -44,6 +44,7 @@ const headers = ref([
   { title: "支线进度", key: "sidescore", width: "100px" },
   { title: "完成时间", key: "scoretime", width: "150px" },
   { title: "队长", key: "leader", width: "80px" },
+  { title: "人数", key: "number", width: "80px" },
   { title: "成员", key: "members", width: "200px" },
 ])
 const selected = ref()
@@ -79,8 +80,10 @@ async function loadGroup() {
         if (group) {
           if (!group.members) {
             group.members = ""
+            group.number = 0
           }
-          group.members += member.name + " "
+          group.members += member.name + "⭐"
+          group.number += 1
           if (member.isleader) {
             group.leader = member.name ? member.name : "null"
           }
