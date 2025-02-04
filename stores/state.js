@@ -264,8 +264,8 @@ export const useStateStore = defineStore(
     }
 
     async function buyAnswerCount() {
-      groupUsedPoints.value += 2000
-      groupAnswerCount.value[puzzleCurrentId.value - 1] += 1
+      groupUsedPoints.value += 1000
+      groupAnswerCount.value[puzzleCurrentId.value - 1] += 10
       const { error } = await supabase
         .from("groups")
         .update({

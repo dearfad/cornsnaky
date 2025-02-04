@@ -41,7 +41,7 @@
 
       <v-sheet>
         <v-btn
-          text="购买答题次数（2000点）"
+          text="购买答题次数（1000点10次）"
           block
           class="my-4 font-weight-bold"
           size="large"
@@ -135,7 +135,7 @@ async function sendPuzzleAnswer() {
 }
 
 async function buyAnswerCount() {
-  if (stateStore.groupCurrentPoints >= 2000) {
+  if (stateStore.groupCurrentPoints >= 1000) {
     await stateStore.buyAnswerCount()
   } else {
     stateStore.appInfo = "点数不足，请充值！"
