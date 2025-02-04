@@ -212,6 +212,10 @@ async function changeName() {
 
 async function changeGroupName() {
   isGroupNameChanging.value = true
+  if (groupname.value === "") {
+    stateStore.appInfo = "请填写队名"
+    return
+  }
   const { data, error } = await supabase
     .from("groups")
     .update({ name: newGroupName.value })
