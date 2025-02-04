@@ -1,3 +1,4 @@
+import CryptoJS from "crypto-js"
 export const useStateStore = defineStore(
   "state",
   () => {
@@ -142,7 +143,9 @@ export const useStateStore = defineStore(
     async function getPuzzleDetail() {
       const { data, error } = await supabase
         .from("puzzles")
-        .select("*")
+        .select(
+          "id, name, content, images, file, audios, tips, tipcontent, story"
+        )
         .eq("id", puzzleCurrentId.value)
       if (error) {
         appInfo.value = error
@@ -151,10 +154,11 @@ export const useStateStore = defineStore(
         puzzles.value[puzzleCurrentId.value - 1].images = data[0].images
         puzzles.value[puzzleCurrentId.value - 1].file = data[0].file
         puzzles.value[puzzleCurrentId.value - 1].audios = data[0].audios
+        puzzles.value[puzzleCurrentId.value - 1].story = data[0].story
         puzzles.value[puzzleCurrentId.value - 1].tips = data[0].tips.map(
           (item, n) => {
             if (groupOpenTips.value[puzzleCurrentId.value - 1][n] === 1) {
-              item.content = data[0].tipcontent[n]
+              item.content = decryptTipContent(data[0].tipcontent[n])
             } else {
               item.content = ""
             }
@@ -165,16 +169,24 @@ export const useStateStore = defineStore(
       }
     }
 
+    function decryptTipContent(tipContent) {
+      return CryptoJS.AES.decrypt(
+        tipContent,
+        import.meta.env.VITE_CRYPTO_KEY
+      ).toString(CryptoJS.enc.Utf8)
+    }
+
     async function checkPuzzleAnswer(answer) {
       const { data, error } = await supabase
         .from("puzzles")
-        .select("answer")
+        .select()
         .eq("id", puzzleCurrentId.value)
+        .eq("answer", answer)
       if (error) {
         appInfo.value = error
       } else {
         await updateGroupCount()
-        if (answer === data[0].answer) {
+        if (data.length > 0) {
           if (groupCompleted.value[puzzleCurrentId.value - 1] === 0) {
             groupCompleted.value[puzzleCurrentId.value - 1] = 1
             const score =

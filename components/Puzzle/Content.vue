@@ -9,6 +9,16 @@
           {{ stateStore.puzzleCurrentId > 8 ? "支线任务" : "主线任务" }}
         </v-card-subtitle>
       </v-card-item>
+      <v-card-text
+        v-if="
+          stateStore.groupCompleted[stateStore.puzzleCurrentId - 1] === 1
+            ? true
+            : false
+        "
+        class="pt-4 text-body-1 font-weight-bold"
+      >
+        {{ stateStore.puzzles[stateStore.puzzleCurrentId - 1].story }}
+      </v-card-text>
       <v-card-text class="pt-4 text-body-1">
         {{ stateStore.puzzles[stateStore.puzzleCurrentId - 1].content }}
       </v-card-text>
@@ -71,6 +81,7 @@
           class="font-weight-bold"
           size="x-large"
           block
+          :loading="isSending"
           @click="sendPuzzleAnswer"
         />
       </v-sheet>
@@ -82,6 +93,7 @@
 const isReady = ref(false)
 const puzzleAnswer = ref("")
 const stateStore = useStateStore()
+const isSending = ref(false)
 
 onBeforeMount(async () => {
   if (stateStore.puzzles.length === 0) {
@@ -107,6 +119,7 @@ async function getPuzzleContent() {
 }
 
 async function sendPuzzleAnswer() {
+  isSending.value = true
   if (stateStore.groupAnswerCount[stateStore.puzzleCurrentId - 1] >= 1) {
     if (stateStore.groupCompleted[stateStore.puzzleCurrentId - 1] != 1) {
       stateStore.groupAnswerCount[stateStore.puzzleCurrentId - 1] -= 1
@@ -118,6 +131,7 @@ async function sendPuzzleAnswer() {
   } else {
     stateStore.appInfo = "答题次数已经耗尽，请购买次数或者放弃！"
   }
+  isSending.value = false
 }
 
 async function buyAnswerCount() {

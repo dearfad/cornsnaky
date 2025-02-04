@@ -2,7 +2,7 @@
   <v-footer app>
     <ClientOnly>
       <v-sheet class="mx-auto text-caption">
-        {{ new Date().getFullYear() }} - Ver 2025.0204.11.36 -
+        {{ new Date().getFullYear() }} - Ver 2025.0204.20.44 -
         <span class="font-weight-bold">{{
           stateStore.userName
             ? stateStore.userName + "@" + stateStore.userGroup
