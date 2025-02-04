@@ -6,7 +6,15 @@
       :key="n"
     >
       <v-expansion-panel-title>
-        <v-btn :text="tip.price + '点购买'" @click="buyTip(n, tip.price)" />
+        <v-btn
+          :text="tip.price + '点购买'"
+          :disabled="
+            stateStore.groupOpenTips[stateStore.puzzleCurrentId - 1][n] === 1
+              ? true
+              : false
+          "
+          @click="buyTip(n, tip.price)"
+        />
         <v-sheet class="pl-4">{{ tip.title }}</v-sheet>
       </v-expansion-panel-title>
       <v-expansion-panel-text>

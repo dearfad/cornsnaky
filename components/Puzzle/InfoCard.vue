@@ -51,7 +51,6 @@ const supabase = useSupabaseClient()
 const stateStore = useStateStore()
 const isRefreshing = ref(false)
 const isStarting = ref(false)
-const isCurrentPointsRefreshing = ref(true)
 
 onMounted(async () => {
   if (!stateStore.groupName) {

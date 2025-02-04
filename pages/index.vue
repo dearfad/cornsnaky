@@ -15,7 +15,7 @@
     </v-row>
     <v-row>
       <v-col class="text-h6 text-center font-weight-bold">
-        Cornsnaky's Snakeyear
+        Cornsnaky's Snake Year
       </v-col>
     </v-row>
     <v-row>

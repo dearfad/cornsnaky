@@ -241,7 +241,7 @@ export const useStateStore = defineStore(
         appInfo.value = error
       } else {
         await getGroupInfo()
-        // appInfo.value = "刷新成功"
+        appInfo.value = "提示购买成功"
       }
     }
 
