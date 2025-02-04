@@ -55,7 +55,6 @@ async function loadGroup() {
     .from("groups")
     .select("*")
     .order("mainscore", { ascending: false })
-    .order("sidescore", { ascending: false })
     .order("scoretime", { ascending: true })
   if (error) {
     snackBarText.value = error

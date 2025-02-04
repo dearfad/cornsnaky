@@ -39,6 +39,21 @@
         />
       </v-sheet>
 
+      <v-card title="小队已提交过的答案">
+        <v-card-text>
+          <v-chip
+            v-for="(log, i) in stateStore.groupAnswerLog[
+              stateStore.puzzleCurrentId - 1
+            ]"
+            :key="i"
+            variant="elevated"
+            class="font-weight-bold"
+          >
+            {{ log }}
+          </v-chip>
+        </v-card-text>
+      </v-card>
+
       <v-sheet class="py-4">
         <v-text-field
           v-model="puzzleAnswer"
@@ -95,6 +110,9 @@ async function sendPuzzleAnswer() {
   if (stateStore.groupAnswerCount[stateStore.puzzleCurrentId - 1] >= 1) {
     if (stateStore.groupCompleted[stateStore.puzzleCurrentId - 1] != 1) {
       stateStore.groupAnswerCount[stateStore.puzzleCurrentId - 1] -= 1
+      stateStore.groupAnswerLog[stateStore.puzzleCurrentId - 1].push(
+        puzzleAnswer.value
+      )
     }
     await stateStore.checkPuzzleAnswer(puzzleAnswer.value)
   } else {

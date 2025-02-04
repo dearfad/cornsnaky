@@ -28,6 +28,7 @@ export const useStateStore = defineStore(
     const groupOpenTips = ref([])
     const groupMembers = ref([])
     const groupCurrentPoints = ref(0)
+    const groupAnswerLog = ref([])
 
     const groupIsSolving = computed(() => (groupStartTime.value ? true : false))
 
@@ -59,6 +60,7 @@ export const useStateStore = defineStore(
       groupCompleted.value = []
       groupOpenTips.value = []
       groupMembers.value = []
+      groupAnswerLog.value = []
       // puzzles
       puzzles.value = []
       puzzleTips.value = []
@@ -101,6 +103,7 @@ export const useStateStore = defineStore(
         groupAnswerCount.value = data[0].count
         groupCompleted.value = data[0].completed
         groupOpenTips.value = data[0].opentips
+        groupAnswerLog.value = data[0].answerlog
         groupCurrentPoints.value = getCurrentPoints()
         await getPuzzleInfo()
         // appInfo.value = "刷新成功"
@@ -206,13 +209,16 @@ export const useStateStore = defineStore(
     async function updateGroupCount() {
       const { error } = await supabase
         .from("groups")
-        .update({ count: groupAnswerCount.value })
+        .update({
+          count: groupAnswerCount.value,
+          answerlog: groupAnswerLog.value,
+        })
         .eq("name", groupName.value)
         .select()
       if (error) {
         appInfo.value = error
       } else {
-        appInfo.value = "次数更新成功"
+        // appInfo.value = "次数更新成功"
       }
     }
 
@@ -303,6 +309,7 @@ export const useStateStore = defineStore(
       groupAnswerCount,
       groupCompleted,
       groupMembers,
+      groupAnswerLog,
 
       puzzles,
       puzzleTips,
