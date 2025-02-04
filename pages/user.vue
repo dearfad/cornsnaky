@@ -112,9 +112,9 @@
                 v-model="groupcode"
                 label="输入小队密钥"
                 variant="outlined"
-                maxlength="10"
-                :counter="10"
-                :rules="[(v) => v.length <= 10 || '最多只能输入10个字符']"
+                maxlength="30"
+                :counter="30"
+                :rules="[(v) => v.length <= 30 || '最多只能输入30个字符']"
               />
               <v-btn
                 block
@@ -142,9 +142,9 @@
                 v-model="groupcode"
                 label="小队密钥"
                 variant="outlined"
-                maxlength="10"
-                :counter="10"
-                :rules="[(v) => v.length <= 10 || '最多只能输入10个字符']"
+                maxlength="30"
+                :counter="30"
+                :rules="[(v) => v.length <= 30 || '最多只能输入30个字符']"
               />
               <v-btn
                 block
