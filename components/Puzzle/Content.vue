@@ -122,6 +122,7 @@ async function getPuzzleContent() {
 
 async function sendPuzzleAnswer() {
   isSending.value = true
+  puzzleAnswer.value = puzzleAnswer.value.replace(/\s+/g, "").toLowerCase()
   await stateStore.getGroupInfo()
   if (stateStore.groupAnswerCount[stateStore.puzzleCurrentId - 1] >= 1) {
     if (stateStore.groupCompleted[stateStore.puzzleCurrentId - 1] != 1) {
