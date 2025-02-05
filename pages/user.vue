@@ -20,7 +20,8 @@
                 block
                 size="large"
                 variant="flat"
-                @click="stateStore.getGroupInfo"
+                :loading="isCodeLoading"
+                @click="getGroupCode"
               />
               <v-btn
                 text="退出登录"
@@ -188,6 +189,7 @@ const isGroupMembersLoading = ref(false)
 const isNameChanging = ref(false)
 const isGroupNameChanging = ref(false)
 const isGroupJoining = ref(false)
+const isCodeLoading = ref(false)
 
 async function signOut() {
   const { error } = await supabase.auth.signOut()
@@ -328,5 +330,19 @@ async function refreshGroupMembers() {
   isGroupMembersLoading.value = true
   await stateStore.getGroupMembers()
   isGroupMembersLoading.value = false
+}
+
+async function getGroupCode() {
+  isCodeLoading.value = true
+  const { data, error } = await supabase
+    .from("groups")
+    .select("code")
+    .eq("name", stateStore.userGroup)
+  if (error) {
+    stateStore.appInfo = error
+  } else {
+    stateStore.groupCode = data[0].code
+  }
+  isCodeLoading.value = false
 }
 </script>
