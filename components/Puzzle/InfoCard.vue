@@ -33,7 +33,6 @@
         class="my-4"
       />
       <v-btn
-        v-if="false"
         block
         size="x-large"
         class="my-2"
