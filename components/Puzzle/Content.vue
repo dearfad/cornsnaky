@@ -17,7 +17,9 @@
         "
         class="pt-4 text-body-1 font-weight-bold"
       >
-        {{ stateStore.puzzles[stateStore.puzzleCurrentId - 1].story }}
+        <div
+          v-html="stateStore.puzzles[stateStore.puzzleCurrentId - 1].story"
+        />
       </v-card-text>
       <v-card-text class="pt-4 text-body-1">
         {{ stateStore.puzzles[stateStore.puzzleCurrentId - 1].content }}
