@@ -192,19 +192,29 @@ export const useStateStore = defineStore(
               puzzleCurrentId.value <= 8
                 ? { mainscore: groupMainScore.value + 1 }
                 : { sidescore: groupSideScore.value + 1 }
-            const mainScoreTime =
-              puzzleCurrentId.value <= 8 ? new Date() : groupScoreTime.value
-            const { error: grouperror } = await supabase
-              .from("groups")
-              .update({
-                ...score,
-                ...{ completed: groupCompleted.value },
-                ...{ scoretime: mainScoreTime },
-              })
-              .eq("name", groupName.value)
-              .select()
-            if (grouperror) {
-              appInfo.value = grouperror
+            if (puzzleCurrentId.value <= 8) {
+              const { error: grouperro1 } = await supabase
+                .from("groups")
+                .update({
+                  ...score,
+                  ...{ completed: groupCompleted.value },
+                  ...{ scoretime: new Date() },
+                })
+                .eq("name", groupName.value)
+                .select()
+            } else {
+              const { error: grouperror2 } = await supabase
+                .from("groups")
+                .update({
+                  ...score,
+                  ...{ completed: groupCompleted.value },
+                })
+                .eq("name", groupName.value)
+                .select()
+            }
+
+            if (grouperro1 || grouperror2) {
+              appInfo.value = "出现错误"
             } else {
               await getGroupInfo()
               appInfo.value = "分数更新成功"
