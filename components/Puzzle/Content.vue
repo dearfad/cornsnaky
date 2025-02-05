@@ -6,7 +6,7 @@
           {{ stateStore.puzzles[stateStore.puzzleCurrentId - 1].name }}
         </v-card-title>
         <v-card-subtitle>
-          {{ stateStore.puzzleCurrentId > 8 ? "支线任务" : "主线任务" }}
+          {{ stateStore.puzzleCurrentId > 8 ? "支线谜题" : "主线谜题" }}
         </v-card-subtitle>
       </v-card-item>
       <v-card-text

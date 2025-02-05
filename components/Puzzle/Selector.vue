@@ -14,7 +14,7 @@
               stateStore.puzzleCurrentId <= 8
             "
           >
-            主线任务
+            主线谜题
           </v-btn>
         </v-col>
       </v-row>
@@ -61,7 +61,7 @@
               stateStore.puzzleCurrentId > 8
             "
           >
-            支线任务
+            支线谜题
           </v-btn>
         </v-col>
       </v-row>

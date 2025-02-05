@@ -18,6 +18,7 @@ export const useStateStore = defineStore(
 
     // Group
     const groupName = ref("")
+    const groupCode = ref("")
     const groupLeader = ref("")
     const groupMainScore = ref(0)
     const groupSideScore = ref(0)
@@ -51,6 +52,7 @@ export const useStateStore = defineStore(
       userIsLeader.value = false
       // group
       groupName.value = ""
+      groupCode.value = ""
       groupLeader.value = ""
       groupMainScore.value = 0
       groupSideScore.value = 0
@@ -91,6 +93,7 @@ export const useStateStore = defineStore(
         appInfo.value = error
       } else {
         groupName.value = data[0].name
+        groupCode.value = data[0].code
         groupLeader.value = data[0].leader
         groupMainScore.value = data[0].mainscore
         groupSideScore.value = data[0].sidescore
@@ -310,6 +313,7 @@ export const useStateStore = defineStore(
       getGroupInfo,
 
       groupName,
+      groupCode,
       groupLeader,
       groupMainScore,
       groupSideScore,

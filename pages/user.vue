@@ -12,6 +12,16 @@
               <v-sheet class="text-center font-weight-bold text-h6 my-2">
                 {{ stateStore.userIsLeader ? "队长" : "队员" }}
               </v-sheet>
+              <v-sheet class="text-center font-weight-bold text-h6 my-2">
+                {{ stateStore.groupCode }}
+              </v-sheet>
+              <v-btn
+                text="小队密钥"
+                block
+                size="large"
+                variant="flat"
+                @click="stateStore.getGroupInfo"
+              />
               <v-btn
                 text="退出登录"
                 block
