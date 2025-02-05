@@ -179,6 +179,7 @@ export const useStateStore = defineStore(
     }
 
     async function checkPuzzleAnswer(answer) {
+      console.log(new Date())
       const { data, error } = await supabase
         .from("puzzles")
         .select()
