@@ -98,11 +98,7 @@ export const useStateStore = defineStore(
         groupMainScore.value = data[0].mainscore
         groupSideScore.value = data[0].sidescore
         groupScoreTime.value = data[0].scoretime
-          ? getBeijingTime(data[0].scoretime)
-          : null
         groupStartTime.value = data[0].starttime
-          ? getBeijingTime(data[0].starttime)
-          : null
         groupUsedPoints.value = data[0].usedpoints
         groupAnswerCount.value = data[0].count
         groupCompleted.value = data[0].completed
@@ -197,9 +193,7 @@ export const useStateStore = defineStore(
                 ? { mainscore: groupMainScore.value + 1 }
                 : { sidescore: groupSideScore.value + 1 }
             const mainScoreTime =
-              puzzleCurrentId.value <= 8
-                ? new Date().toUTCString()
-                : groupScoreTime.value
+              puzzleCurrentId.value <= 8 ? new Date() : groupScoreTime.value
             const { error: grouperror } = await supabase
               .from("groups")
               .update({
