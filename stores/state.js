@@ -173,6 +173,7 @@ export const useStateStore = defineStore(
     }
 
     function decryptTipContent(tipContent) {
+      console.log(tipContent)
       return CryptoJS.AES.decrypt(
         tipContent,
         import.meta.env.VITE_CRYPTO_KEY
