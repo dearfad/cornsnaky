@@ -196,7 +196,7 @@ export const useStateStore = defineStore(
                 ? { mainscore: groupMainScore.value + 1 }
                 : { sidescore: groupSideScore.value + 1 }
             const mainScoreTime =
-              puzzleCurrentId.value <= 7
+              puzzleCurrentId.value <= 8
                 ? new Date().toUTCString()
                 : groupScoreTime.value
             const { error: grouperror } = await supabase
