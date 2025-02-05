@@ -2,7 +2,11 @@
   <v-sheet class="pa-4" :elevation="2">
     <v-sheet class="my-2">答题队员：{{ stateStore.userName }}</v-sheet>
     <v-sheet class="my-2">所属小队：{{ stateStore.groupName }}</v-sheet>
-    <v-sheet class="my-2">开始时间：{{ stateStore.groupStartTime }}</v-sheet>
+    <v-sheet class="my-2"
+      >开始时间：{{
+        stateStore.getBeijingTime(stateStore.groupStartTime)
+      }}</v-sheet
+    >
     <v-sheet class="my-2">
       当前分数：{{ stateStore.groupMainScore }} /
       {{ stateStore.groupSideScore }}
