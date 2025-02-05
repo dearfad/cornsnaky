@@ -306,15 +306,19 @@ async function joinGroup() {
   } else if (data.length === 0) {
     stateStore.appInfo = "小队密钥无效"
   } else {
-    const { error: errorUpdate } = await supabase
-      .from("users")
-      .update({ group: data[0].name })
-      .eq("id", user.value.id)
-    if (errorUpdate) {
-      stateStore.appInfo = errorUpdate
+    if (data[0].starttime) {
+      stateStore.appInfo = "该队已开始比赛，无法加入！"
     } else {
-      stateStore.userGroup = data[0].name
-      stateStore.appInfo = "加入组成功"
+      const { error: errorUpdate } = await supabase
+        .from("users")
+        .update({ group: data[0].name })
+        .eq("id", user.value.id)
+      if (errorUpdate) {
+        stateStore.appInfo = errorUpdate
+      } else {
+        stateStore.userGroup = data[0].name
+        stateStore.appInfo = "加入组成功"
+      }
     }
   }
   isGroupJoining.value = false
