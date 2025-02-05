@@ -173,11 +173,9 @@ export const useStateStore = defineStore(
     }
 
     function decryptTipContent(tipContent) {
-      console.log(tipContent)
-      return CryptoJS.AES.decrypt(
-        tipContent,
-        import.meta.env.VITE_CRYPTO_KEY
-      ).toString(CryptoJS.enc.Utf8)
+      return CryptoJS.AES.decrypt(tipContent, "prnRwsSCxnZ3wnPSdR8d").toString(
+        CryptoJS.enc.Utf8
+      )
     }
 
     async function checkPuzzleAnswer(answer) {
