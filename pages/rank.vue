@@ -42,6 +42,7 @@ const headers = ref([
   { title: "组名", key: "name", width: "200px" },
   { title: "主线进度", key: "mainscore", width: "100px" },
   { title: "支线进度", key: "sidescore", width: "100px" },
+  { title: "ID", key: "id", width: "80px" },
   { title: "完成时间", key: "scoretime", width: "150px" },
   { title: "队长", key: "leader", width: "80px" },
   { title: "人数", key: "number", width: "80px" },
@@ -61,7 +62,7 @@ async function loadGroup() {
     snackBar.value = true
   } else {
     data.forEach((item, index) => {
-      item.rank = index + 1
+      item.rank = index
       item.scoretime = item.scoretime
         ? stateStore.getBeijingTime(item.scoretime)
         : null
