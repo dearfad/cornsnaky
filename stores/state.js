@@ -104,16 +104,22 @@ export const useStateStore = defineStore(
         groupCompleted.value = data[0].completed
         groupOpenTips.value = data[0].opentips
         groupAnswerLog.value = data[0].answerlog
-        groupCurrentPoints.value = getCurrentPoints()
+        groupCurrentPoints.value = await getCurrentPoints()
         await getPuzzleInfo()
         // appInfo.value = "刷新成功"
       }
     }
 
-    function getCurrentPoints() {
+    async function getCurrentPoints() {
       if (groupStartTime.value) {
+        const utcTime = await $fetch(
+          "https://www.timeapi.io/api/timezone/zone?timeZone=UTC"
+        )
         return Math.floor(
-          ((new Date() - new Date(groupStartTime.value)) / (1000 * 60)) * 5 -
+          ((new Date(utcTime.currentLocalTime) -
+            new Date(groupStartTime.value.replace(/\+.*$/, ""))) /
+            (1000 * 60)) *
+            5 -
             groupUsedPoints.value
         )
       } else {
