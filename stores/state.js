@@ -183,7 +183,8 @@ export const useStateStore = defineStore(
     }
 
     async function checkPuzzleAnswer(answer) {
-      console.log(new Date())
+      let mainError = ""
+      let sideError = ""
       const { data, error } = await supabase
         .from("puzzles")
         .select()
@@ -201,7 +202,7 @@ export const useStateStore = defineStore(
                 ? { mainscore: groupMainScore.value + 1 }
                 : { sidescore: groupSideScore.value + 1 }
             if (puzzleCurrentId.value <= 8) {
-              const { error: grouperro1 } = await supabase
+              const { error: groupUpdateMainError } = await supabase
                 .from("groups")
                 .update({
                   ...score,
@@ -210,8 +211,11 @@ export const useStateStore = defineStore(
                 })
                 .eq("name", groupName.value)
                 .select()
+              if (groupUpdateMainError) {
+                mainError = groupUpdateMainError
+              }
             } else {
-              const { error: grouperror2 } = await supabase
+              const { error: groupUpdateSideerror } = await supabase
                 .from("groups")
                 .update({
                   ...score,
@@ -219,9 +223,12 @@ export const useStateStore = defineStore(
                 })
                 .eq("name", groupName.value)
                 .select()
+              if (groupUpdateSideerror) {
+                sideError = groupUpdateSideerror
+              }
             }
 
-            if (grouperro1 || grouperror2) {
+            if (mainError || sideError) {
               appInfo.value = "出现错误"
             } else {
               await getGroupInfo()
