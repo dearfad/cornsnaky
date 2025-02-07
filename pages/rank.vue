@@ -44,6 +44,7 @@ const headers = ref([
   { title: "支线进度", key: "sidescore", width: "100px" },
   { title: "ID", key: "id", width: "80px" },
   { title: "完成时间", key: "scoretime", width: "150px" },
+  { title: "耗时", key: "costtime", width: "100px" },
   { title: "队长", key: "leader", width: "80px" },
   { title: "人数", key: "number", width: "80px" },
   { title: "成员", key: "members", width: "200px" },
@@ -66,6 +67,18 @@ async function loadGroup() {
       item.scoretime = item.scoretime
         ? stateStore.getBeijingTime(item.scoretime)
         : null
+      if (item.scoretime && item.starttime) {
+        const costTime = new Date(item.scoretime) - new Date(item.starttime)
+        // 计算小时、分钟和秒
+        const totalSeconds = Math.floor(costTime / 1000)
+        const hours = Math.floor(totalSeconds / 3600)
+        const minutes = Math.floor((totalSeconds % 3600) / 60)
+        const seconds = totalSeconds % 60
+        // 格式化输出
+        item.costtime = `${hours.toString().padStart(2, "0")}:${minutes
+          .toString()
+          .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`
+      }
     })
     items.value = data
     const { data: members, error: memberError } = await supabase
