@@ -71,7 +71,8 @@ const headers = ref([
 const selected = ref()
 
 async function loadGroup() {
-  console.log(import.meta.env)
+  console.log("meta.env: ", import.meta.env)
+  console.log("process.env: ", process.env)
   isLoading.value = true
   const { data, error } = await supabase
     .from("groups_202502061655")
