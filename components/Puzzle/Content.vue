@@ -42,13 +42,33 @@
       <PuzzleTips />
 
       <v-sheet>
-        <v-btn
-          text="购买答题次数（1000点10次）"
-          block
-          class="my-4 font-weight-bold"
-          size="large"
-          @click="buyAnswerCount"
-        />
+        <v-dialog width="auto">
+          <template #activator="{ props: activatorProps }">
+            <v-btn
+              block
+              text="购买答题次数（1000点10次）"
+              class="my-4 font-weight-bold"
+              size="large"
+              v-bind="activatorProps"
+            />
+          </template>
+          <template #default="{ isActive }">
+            <v-card>
+              <v-card-title>
+                <span class="text-h5 font-weight-bold">提示</span>
+              </v-card-title>
+              <v-card-text> 确定花费1000点数购买10次答题次数么？ </v-card-text>
+              <template #actions>
+                <v-spacer />
+                <v-btn text="取消" @click="isActive.value = false" />
+                <v-btn
+                  text="确认"
+                  @click=";(isActive.value = false), buyAnswerCount"
+                />
+              </template>
+            </v-card>
+          </template>
+        </v-dialog>
       </v-sheet>
 
       <v-card title="小队已提交过的答案">
