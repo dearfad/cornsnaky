@@ -71,8 +71,6 @@ const headers = ref([
 const selected = ref()
 
 async function loadGroup() {
-  console.log("meta.env: ", import.meta.env.NUXT_CRYPTO_KEY)
-  console.log("process.env: ", process.env.NUXT_CRYPTO_KEY)
   isLoading.value = true
   const { data, error } = await supabase
     .from("groups_202502061655")

@@ -17,6 +17,7 @@
                   : false
               "
               v-bind="activatorTips"
+              :loading="isTipBuying"
             />
           </template>
           <template #default="{ isActive }">
@@ -49,12 +50,15 @@
 
 <script setup>
 const stateStore = useStateStore()
+const isTipBuying = ref(false)
 
 async function buyTip(n, price) {
+  isTipBuying.value = true
   if (stateStore.groupCurrentPoints >= price) {
     await stateStore.buyTip(n, price)
   } else {
     stateStore.appInfo = "当前点数不足，无法购买！"
   }
+  isTipBuying.value = false
 }
 </script>

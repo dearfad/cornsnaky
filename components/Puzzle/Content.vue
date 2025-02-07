@@ -50,6 +50,7 @@
               class="my-4 font-weight-bold"
               size="large"
               v-bind="activatorProps"
+              :loading="isAnswerCountBuying"
             />
           </template>
           <template #default="{ isActive }">
@@ -116,6 +117,7 @@ const isReady = ref(false)
 const puzzleAnswer = ref("")
 const stateStore = useStateStore()
 const isSending = ref(false)
+const isAnswerCountBuying = ref(false)
 
 onBeforeMount(async () => {
   if (stateStore.puzzles.length === 0) {
@@ -159,10 +161,12 @@ async function sendPuzzleAnswer() {
 }
 
 async function buyAnswerCount() {
+  isAnswerCountBuying.value = true
   if (stateStore.groupCurrentPoints >= 1000) {
     await stateStore.buyAnswerCount()
   } else {
     stateStore.appInfo = "点数不足，请充值！"
   }
+  isAnswerCountBuying.value = false
 }
 </script>

@@ -16,4 +16,9 @@ export default defineNuxtConfig({
   supabase: {
     redirect: false,
   },
+  runtimeConfig: {
+    public: {
+      cryptoKey: "",
+    },
+  },
 })
