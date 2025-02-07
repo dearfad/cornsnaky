@@ -9,6 +9,7 @@
           items-per-page="-1"
           items-per-page-text="每页显示数量"
           hide-no-data
+          multi-sort
         />
       </v-col>
     </v-row>
@@ -24,17 +25,12 @@
         />
       </v-col>
     </v-row>
-    <v-snackbar v-model="snackBar" timeout="2000"
-      ><div class="text-center">{{ snackBarText }}</div></v-snackbar
-    >
   </v-container>
 </template>
 
 <script setup>
 const stateStore = useStateStore()
 const supabase = useSupabaseClient()
-const snackBar = ref(false)
-const snackBarText = ref("")
 const items = ref([])
 const isLoading = ref(false)
 const headers = ref([
@@ -59,8 +55,7 @@ async function loadGroup() {
     .order("mainscore", { ascending: false })
     .order("scoretime", { ascending: true })
   if (error) {
-    snackBarText.value = error
-    snackBar.value = true
+    stateStore.appInfo = error
   } else {
     data.forEach((item, index) => {
       item.rank = index
