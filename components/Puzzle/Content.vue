@@ -63,7 +63,7 @@
                 <v-btn text="取消" @click="isActive.value = false" />
                 <v-btn
                   text="确认"
-                  @click=";(isActive.value = false), buyAnswerCount"
+                  @click=";(isActive.value = false), buyAnswerCount()"
                 />
               </template>
             </v-card>
