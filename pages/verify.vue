@@ -73,7 +73,7 @@ const selected = ref()
 async function loadGroup() {
   isLoading.value = true
   const { data, error } = await supabase
-    .from("groups_202502061655")
+    .from("groups_20250209_final")
     .select("*")
     .order("mainscore", { ascending: false })
     .order("scoretime", { ascending: true })
@@ -100,7 +100,7 @@ async function loadGroup() {
     })
     items.value = data
     const { data: members, error: memberError } = await supabase
-      .from("users_20250207")
+      .from("users_20250209_final")
       .select("name, group, isleader")
     if (memberError) {
       stateStore.appInfo = memberError

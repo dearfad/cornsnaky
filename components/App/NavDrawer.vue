@@ -56,6 +56,20 @@
         >
           排名
         </v-list-item>
+        <v-list-item
+          prepend-icon="mdi-podium-gold"
+          class="font-weight-bold text-subtitle-2"
+          to="/award"
+        >
+          奖励
+        </v-list-item>
+        <v-list-item
+          prepend-icon="mdi-vanity-light"
+          class="font-weight-bold text-subtitle-2"
+          to="/verify"
+        >
+          结赛
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
   </ClientOnly>
