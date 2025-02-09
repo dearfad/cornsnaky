@@ -57,15 +57,15 @@ const search = ref("")
 const items = ref([])
 const isLoading = ref(false)
 const headers = ref([
-  { title: "排名", key: "rank", width: "80px" },
+  { title: "排名", key: "rank", width: "100px" },
   { title: "组名", key: "name", width: "200px" },
-  { title: "主线进度", key: "mainscore", width: "100px" },
-  { title: "支线进度", key: "sidescore", width: "100px" },
+  { title: "主线进度", key: "mainscore", width: "150px" },
+  { title: "支线进度", key: "sidescore", width: "150px" },
   { title: "ID", key: "id", width: "80px" },
   { title: "完成时间", key: "scoretime", width: "150px" },
   { title: "耗时", key: "costtime", width: "100px" },
   { title: "队长", key: "leader", width: "80px" },
-  { title: "人数", key: "number", width: "80px" },
+  { title: "人数", key: "number", width: "100px" },
   { title: "成员", key: "members", width: "200px" },
 ])
 const selected = ref()
