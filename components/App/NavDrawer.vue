@@ -59,7 +59,7 @@
         <v-list-item
           prepend-icon="mdi-podium-gold"
           class="font-weight-bold text-subtitle-2"
-          to="/award"
+          to="/"
         >
           奖励
         </v-list-item>
