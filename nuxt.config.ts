@@ -20,4 +20,7 @@ export default defineNuxtConfig({
       cryptoKey: "",
     },
   },
+  nitro: {
+    preset: "static",
+  },
 });
