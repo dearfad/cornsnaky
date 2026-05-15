@@ -15,7 +15,8 @@
 <script setup>
 definePageMeta({
   // middleware: ["auth", "group", "temp"],
-  middleware: ["auth", "group"],
-})
-const stateStore = useStateStore()
+  // middleware: ["auth", "group"],
+  middleware: ["group"],
+});
+const stateStore = useStateStore();
 </script>
