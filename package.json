@@ -17,6 +17,7 @@
     "@pinia/nuxt": "^0.11.3",
     "crypto-js": "^4.2.0",
     "eslint": "^9.39.1",
+    "markstream-vue": "^0.0.14-beta.8",
     "nuxt": "^4.2.1",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",

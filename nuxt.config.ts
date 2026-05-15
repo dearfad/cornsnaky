@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
   compatibilityDate: "2025-11-20",
   devtools: { enabled: false },
+  css: ["~/assets/css/main.css"],
   ssr: true,
   modules: [
     "vuetify-nuxt-module",

@@ -21,19 +21,25 @@
 </template>
 
 <script setup>
-const password = ref("")
-const isLoading = ref(false)
-const supabase = useSupabaseClient()
-const stateStore = useStateStore()
+const password = ref("");
+const isLoading = ref(false);
+const supabase = useSupabaseClient();
+const stateStore = useStateStore();
 
 async function changePassword() {
-  isLoading.value = true
-  const { error } = await supabase.auth.updateUser({ password: password.value })
+  // 已完赛
+  stateStore.appInfo = "已完赛，注册停止。";
+  return;
+  //
+  isLoading.value = true;
+  const { error } = await supabase.auth.updateUser({
+    password: password.value,
+  });
   if (error) {
-    stateStore.appInfo = error
+    stateStore.appInfo = error;
   } else {
-    stateStore.appInfo = "密码更新成功"
+    stateStore.appInfo = "密码更新成功";
   }
-  isLoading.value = false
+  isLoading.value = false;
 }
 </script>
