@@ -52,52 +52,60 @@
   </v-container>
 </template>
 <script setup>
-const supabase = useSupabaseClient()
-const user = useSupabaseUser()
-const stateStore = useStateStore()
-const router = useRouter()
-const email = ref("")
-const password = ref("")
-const isRegistering = ref(false)
+const supabase = useSupabaseClient();
+const user = useSupabaseUser();
+const stateStore = useStateStore();
+const router = useRouter();
+const email = ref("");
+const password = ref("");
+const isRegistering = ref(false);
 
 const signOut = async () => {
-  const { error } = await supabase.auth.signOut()
+  // 已完赛
+  stateStore.appInfo = "已完赛，注册停止。";
+  return;
+  //
+  const { error } = await supabase.auth.signOut();
   if (error) {
-    stateStore.appInfo = error
+    stateStore.appInfo = error;
   } else {
-    stateStore.$reset()
-    stateStore.appInfo = "退出成功"
+    stateStore.$reset();
+    stateStore.appInfo = "退出成功";
   }
-}
+};
 
 const signUpNewUser = async () => {
-  isRegistering.value = true
-  stateStore.$reset()
+  // 已完赛
+  stateStore.appInfo = "已完赛，注册停止。";
+  return;
+  //
+  isRegistering.value = true;
+  stateStore.$reset();
   const { data, error: errorSignUp } = await supabase.auth.signUp({
     email: email.value,
     password: password.value,
-  })
+  });
   if (errorSignUp) {
     if (errorSignUp.code === "user_already_exists") {
-      stateStore.appInfo = "用户已注册"
+      stateStore.appInfo = "用户已注册";
     } else {
-      stateStore.appInfo = errorSignUp
+      stateStore.appInfo = errorSignUp;
     }
-    isRegistering.value = false
+    isRegistering.value = false;
   } else {
     const { error: errorInsert } = await supabase
       .from("users")
       .insert([{ id: data.user.id }])
-      .select()
+      .select();
     if (errorInsert) {
-      stateStore.appInfo = errorInsert
-      isRegistering.value = false
+      stateStore.appInfo = errorInsert;
+      isRegistering.value = false;
     } else {
-      stateStore.appInfo = "注册成功"
-      await stateStore.getUserInfo()
-      isRegistering.value = false
-      router.push("/user")
+      stateStore.appInfo = "注册成功";
+      await stateStore.getUserInfo();
+      isRegistering.value = false;
+      router.push("/user");
     }
   }
-}
+};
 </script>

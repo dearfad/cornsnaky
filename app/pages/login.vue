@@ -68,47 +68,55 @@
   </v-container>
 </template>
 <script setup>
-const supabase = useSupabaseClient()
-const email = ref("")
-const password = ref("")
-const router = useRouter()
-const stateStore = useStateStore()
-const isLogging = ref(false)
-const user = useSupabaseUser()
+const supabase = useSupabaseClient();
+const email = ref("");
+const password = ref("");
+const router = useRouter();
+const stateStore = useStateStore();
+const isLogging = ref(false);
+const user = useSupabaseUser();
 
 const signInWithPassword = async () => {
-  isLogging.value = true
+  // 已完赛
+  stateStore.appInfo = "已完赛，注册停止。";
+  return;
+  //
+  isLogging.value = true;
   const { error } = await supabase.auth.signInWithPassword({
     email: email.value,
     password: password.value,
-  })
+  });
 
   if (error) {
     switch (error.code) {
       case "invalid_credentials":
-        stateStore.appInfo = "认证失败：登录凭证无效"
-        break
+        stateStore.appInfo = "认证失败：登录凭证无效";
+        break;
       case "validation_failed":
-        stateStore.appInfo = "认证失败：请填写邮箱和密码"
-        break
+        stateStore.appInfo = "认证失败：请填写邮箱和密码";
+        break;
       default:
-        stateStore.appInfo = error
+        stateStore.appInfo = error;
     }
-    isLogging.value = false
+    isLogging.value = false;
   } else {
-    await stateStore.getUserInfo()
-    isLogging.value = false
-    router.push("/user")
+    await stateStore.getUserInfo();
+    isLogging.value = false;
+    router.push("/user");
   }
-}
+};
 
 const signOut = async () => {
-  const { error } = await supabase.auth.signOut()
+  // 已完赛
+  stateStore.appInfo = "已完赛，注册停止。";
+  return;
+  //
+  const { error } = await supabase.auth.signOut();
   if (error) {
-    stateStore.appInfo = error
+    stateStore.appInfo = error;
   } else {
-    stateStore.$reset()
-    stateStore.appInfo = "退出成功"
+    stateStore.$reset();
+    stateStore.appInfo = "退出成功";
   }
-}
+};
 </script>
