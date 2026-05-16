@@ -54,6 +54,7 @@ const md = `
 观察你所铺的路，他与某种古典密码有无比密切的联系。
 </details>
 
+
 <details>
 <summary>答案</summary>
 plains
@@ -61,15 +62,39 @@ plains
 
 ---
 
-
 ## 2. 谜途
 
 [谜途](/documents/Puzzle_2/puzzle_2.zip)
 
 <details>
+<summary>提示1：我毫无头绪</summary>
+去里面探索吧，提示都在里面
+</details>
+
+<details>
+<summary>提示2</summary>
+这是键盘的一部分，你需要把对应位置的字母换成数字。
+</details>
+
+<details>
+<summary>提示3</summary>
+你需要把路径划为3步一组。
+</details>
+
+<details>
+<summary>提示4</summary>
+你需要把数字当成4进制去看待。
+</details>
+
+<details>
+<summary>提示5：我得到了一些提示，我应该怎么把它们联系起来？</summary>
+画一张地图，然后利用你的移动键重新走一遍路。
+</details>
+
+
+<details>
 <summary>答案</summary>
 scale
-
 </details>
 
 ---
@@ -79,9 +104,54 @@ scale
 ![神秘转化](/documents/Puzzle_3/puzzle_3.png)
 
 <details>
+<summary>提示1：这些是什么意思？词的词性怎么不对？</summary>
+你需要把左边的单词变形成右边的单词，变形方法是“错误”的，即将本应用在其他单词上的方法用在了左边的单词上，但是变形前后的单词都是存在的。
+</details>
+
+<details>
+<summary>提示2：请告诉我第一行所对应的。</summary>
+face
+</details>
+
+<details>
+<summary>提示3：请告诉我第二行所对应的。</summary>
+sheet
+</details>
+
+<details>
+<summary>提示4：请告诉我第三行所对应的。</summary>
+illustrate
+</details>
+
+<details>
+<summary>提示5：请告诉我第四行所对应的。</summary>
+axial
+</details>
+
+<details>
+<summary>提示6：请告诉我第五行所对应的。</summary>
+tel
+</details>
+
+<details>
+<summary>提示7：请告诉我第六行所对应的。</summary>
+apply
+</details>
+
+<details>
+<summary>提示8：请告诉我第七行所对应的。</summary>
+sumption
+</details>
+
+<details>
+<summary>提示9：请告诉我第八行所对应的。</summary>
+pic和epic
+</details>
+
+
+<details>
 <summary>答案</summary>
 celltype
-
 </details>
 
 ---
@@ -93,9 +163,39 @@ celltype
 ![夜观星車](/documents/Puzzle_4/puzzle_4.jpg)
 
 <details>
+<summary>提示1：提示1：请按顺序提取以下序列的个数。</summary>
+蓝绿红 绿红绿 红绿蓝 蓝红绿 红蓝绿 红绿红
+</details>
+
+<details>
+<summary>提示2：第一步该怎么做？</summary>
+你需要按照左下角及右上角的单位长度绘制出网格，星星均落于网格交点处。
+</details>
+
+<details>
+<summary>提示3：什么是值相等直线？</summary>
+就是“副对角线”，坐标系中的y=x
+</details>
+
+<details>
+<summary>提示4：怎么理解星之色彩？</summary>
+初之星散发与自身同色的光芒到周围8格，这种光芒混合成次之星。
+</details>
+
+<details>
+<summary>提示5：怎么理解星車交辉？</summary>
+这是初之星形成的方式，同色的星車发出横竖两条光的交点构成一颗初之星。
+</details>
+
+<details>
+<summary>提示6：我理解怎样构成次之星了，但是不是有点奇怪？</summary>
+这些天体并不是所有的次之星。
+</details>
+
+
+<details>
 <summary>答案</summary>
 accede
-
 </details>
 
 ---
