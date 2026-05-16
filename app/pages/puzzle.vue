@@ -34,9 +34,29 @@ const md = `
 ![曹晟康之路](/documents/Puzzle_1/puzzle_1.png)
 
 <details>
+<summary>提示1：这是什么纸笔谜题？</summary>
+这是纸笔谜题 moon or sun 的轻微变种。
+</details>
+
+
+<details>
+<summary>提示2：我已经解开了题面，能提示我怎么得到下一步应该做的事吗？</summary>
+搜索曹晟康，他有一个特点，这个特点可以与路连接起来，得到你所要的。
+</details>
+
+<details>
+<summary>提示3：我已经解开了题面，请告诉我应该干什么。</summary>
+你解得的是一条路径，你需要在这条路上铺上盲道。
+</details>
+
+<details>
+<summary>提示4：我已经铺好了道路，现在我应该干什么？</summary>
+观察你所铺的路，他与某种古典密码有无比密切的联系。
+</details>
+
+<details>
 <summary>答案</summary>
 plains
-
 </details>
 
 ---
